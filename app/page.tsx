@@ -1,209 +1,253 @@
 'use client'
+
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
-import { Gift, LogOut, User, Snowflake, Clock, Settings, X } from 'lucide-react'
+import { Gift, LogOut, User, Snowflake, Settings, X, Sparkles, TreePine, Gamepad2 } from 'lucide-react'
 import ChristmasCountdown from '@/components/ChristmasCountdown'
 import Cookies from 'js-cookie'
+import { getValidAuthToken, clearAuthData } from '@/utils/auth'
+
+type UserInfo = {
+  fullName?: string
+  username?: string
+  avatar?: string
+  snowflakes?: number
+}
 
 export default function Home() {
-  const [user, setUser] = useState<any>(null)
-  const [showPopup, setShowPopup] = useState(false) // State quản lý hiển thị popup
+  const [user, setUser] = useState<UserInfo | null>(null)
+  const [showPopup, setShowPopup] = useState(false)
+  const [isDecember, setIsDecember] = useState(false)
+  const [currentYear, setCurrentYear] = useState<number | null>(null)
 
   useEffect(() => {
+    const now = new Date()
+    setCurrentYear(now.getFullYear())
+    setIsDecember(now.getMonth() === 11)
+
     const userInfo = localStorage.getItem('user_info')
-    const token = localStorage.getItem('access_token')
+    const token = getValidAuthToken()
 
     if (userInfo && token) {
       try {
-        setUser(JSON.parse(userInfo))
+        setUser(JSON.parse(userInfo) as UserInfo)
       } catch (error) {
-        console.error('Lỗi khi đọc dữ liệu user:', error)
+        console.error('Lỗi khi đọc dữ liệu người dùng:', error)
+        clearAuthData()
+        setUser(null)
       }
     } else {
-      // Logic Popup: Chỉ hiện khi CHƯA đăng nhập, delay 1 giây để user kịp ngắm giao diện
-      const timer = setTimeout(() => {
-        setShowPopup(true)
-      }, 1000)
-      return () => clearTimeout(timer)
+      if (userInfo && !token) {
+        clearAuthData()
+        setUser(null)
+      }
+      const timer = window.setTimeout(() => setShowPopup(true), 1000)
+      return () => window.clearTimeout(timer)
     }
   }, [])
 
-  const displayName = user?.fullName || user?.username || "Bạn"
+  const displayName = user?.fullName || user?.username || 'Bạn'
   const avatarUrl = user?.avatar
 
-  const currentYear = new Date().getFullYear()
-  const currentMonth = new Date().getMonth() + 1;
-  const isDecember = currentMonth === 12;
-
   const handleLogout = () => {
-    localStorage.removeItem('access_token')
-    localStorage.removeItem('user_info')
-    Cookies.remove('access_token')
-
+    clearAuthData()
     setUser(null)
+    setShowPopup(false)
     window.location.reload()
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden text-white font-sans selection:bg-red-500 selection:text-white">
-
-      {/* 1. BACKGROUND IMAGE & OVERLAY */}
-      <div
-        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat transform scale-105"
-        style={{
-          backgroundImage: "url('/images/bg-merry-christmas.jpg')"
-        }}
-      >
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"></div>
+    <main className="relative flex min-h-screen flex-col overflow-x-hidden bg-red-950 font-sans text-white selection:bg-yellow-400 selection:text-red-950">
+      {/* BACKGROUND */}
+      <div className="fixed inset-0 z-0">
+        <Image src="/images/bg-merry-christmas.jpg" alt="Khung cảnh Giáng Sinh lung linh" fill priority sizes="100vw" className="object-cover object-center" />
       </div>
+      <div className="fixed inset-0 z-0 bg-linear-to-b from-red-950/75 via-black/40 to-red-950/90" />
+      <div className="pointer-events-none fixed inset-0 z-0 bg-linear-to-br from-yellow-500/10 via-transparent to-green-950/30" />
 
-      {/* 2. TOP BAR (MENU) */}
-      <nav className="relative z-50 flex justify-between items-center px-4 md:px-8 py-6 w-full">
-        <Link
-          href="/"
-          className="flex items-center gap-2 text-xl md:text-2xl font-bold font-serif text-yellow-400 hover:text-yellow-200 transition cursor-pointer"
-        >
-          <Snowflake className="w-8 h-8 animate-spin-slow" />
-          <span className="hidden sm:inline">Christmas Wishes</span>
-        </Link>
+      {/* NAVBAR */}
+      <header className="fixed left-0 top-0 z-50 w-full border-b border-yellow-400/20 bg-red-950/40 px-4 py-3 shadow-lg backdrop-blur-xl md:px-8">
+        <nav className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3">
+          <Link href="/" className="group flex shrink-0 items-center gap-2 font-serif text-xl font-bold text-yellow-400 transition hover:scale-105 hover:text-yellow-200 md:text-2xl">
+            <Snowflake className="h-7 w-7 shrink-0 animate-spin md:h-8 md:w-8" />
+            <span className="hidden sm:inline">Christmas Wishes</span>
+          </Link>
 
-        <div className="flex items-center gap-4">
           {user ? (
-            <div className="flex items-center gap-2 bg-black/30 backdrop-blur-md pl-1 pr-2 py-1 rounded-full border border-white/20 shadow-lg">
-              <Link
-                href="/profile"
-                className="flex items-center gap-3 px-2 py-1 rounded-full hover:bg-white/10 transition group"
-                title="Cài đặt tài khoản"
-              >
+            <div className="flex min-w-0 items-center gap-1 rounded-full border border-yellow-400/30 bg-black/40 py-1 pl-1 pr-2 shadow-lg backdrop-blur-md md:gap-2">
+              <Link href="/profile" title="Cài đặt tài khoản" className="group flex min-w-0 items-center gap-2 rounded-full px-1.5 py-1 transition hover:bg-red-900/50 md:gap-3 md:px-2">
                 {avatarUrl ? (
-                  <img src={avatarUrl} alt="Avatar" className="w-8 h-8 rounded-full border border-white/50 object-cover" />
+                  <img src={avatarUrl} alt="Ảnh đại diện" referrerPolicy="no-referrer" className="h-8 w-8 shrink-0 rounded-full border border-yellow-400/60 object-cover md:h-9 md:w-9" />
                 ) : (
-                  <div className="bg-red-600 p-1.5 rounded-full">
-                    <User className="w-5 h-5" />
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-yellow-300 to-yellow-600 text-red-950 shadow-inner md:h-9 md:w-9">
+                    <User className="h-5 w-5" />
                   </div>
                 )}
-                <span className="font-medium max-w-25 truncate md:max-w-none group-hover:text-yellow-300 transition">
-                  {displayName}
-                </span>
-                <Settings className="w-4 h-4 text-white/50 group-hover:text-white transition" />
+                <span className="max-w-24 truncate text-sm font-medium transition group-hover:text-yellow-300 md:max-w-40 md:text-base">{displayName}</span>
+                <Settings className="h-4 w-4 shrink-0 text-white/50 transition group-hover:text-yellow-400" />
               </Link>
 
-              <div className="h-6 w-px bg-white/20"></div>
+              <div className="mx-1 h-6 w-px shrink-0 bg-white/20" />
 
-              <button
-                onClick={handleLogout}
-                className="p-2 text-white/70 hover:text-red-400 hover:bg-white/10 rounded-full transition"
-                title="Đăng xuất"
+              {/* SỐ BÔNG TUYẾT */}
+              <div
+                title="Số bông tuyết hiện có"
+                className="flex shrink-0 items-center gap-1.5 rounded-full border border-blue-300/20 bg-blue-400/10 px-2.5 py-2 text-blue-200"
               >
-                <LogOut className="w-5 h-5" />
+                <Snowflake className="h-5 w-5 shrink-0 text-blue-300" />
+                <span className="text-sm font-bold tabular-nums">
+                  {(user.snowflakes ?? 0).toLocaleString('vi-VN')}
+                </span>
+              </div>
+
+              <div className="mx-1 h-6 w-px shrink-0 bg-white/20" />
+
+              <button type="button" onClick={handleLogout} title="Đăng xuất" aria-label="Đăng xuất" className="shrink-0 rounded-full p-2 text-white/70 transition hover:bg-red-900/60 hover:text-red-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400">
+                <LogOut className="h-5 w-5" />
               </button>
             </div>
           ) : (
-            <Link
-              href="/login"
-              className="bg-white text-red-900 px-5 py-2 rounded-full font-bold shadow-lg hover:bg-yellow-100 transition"
-            >
+            <Link href="/login" className="shrink-0 rounded-full border border-yellow-300/70 bg-linear-to-r from-yellow-500 to-yellow-300 px-4 py-2 text-sm font-bold text-red-950 shadow-lg transition hover:scale-105 hover:from-yellow-300 hover:to-yellow-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white md:px-6 md:text-base">
               Đăng Nhập
             </Link>
           )}
-        </div>
-      </nav>
+        </nav>
+      </header>
 
-      {/* 3. CENTER CONTENT */}
-      <main className="relative z-10 flex flex-col items-center justify-center min-h-[80vh] px-4 text-center">
+      {/* MAIN CONTENT */}
+      <div className="relative z-10 mx-auto flex w-full max-w-7xl grow flex-col justify-center px-4 pb-12 pt-28 md:px-6 md:pt-32">
+        <div className="grid w-full grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-6">
+          {/* LEFT: TREE MANAGEMENT */}
+          <section className="order-2 flex w-full flex-col items-center justify-center lg:col-span-3 lg:order-1">
+            <div className="w-full rounded-2xl border border-yellow-400/25 bg-black/35 p-5 text-center shadow-2xl backdrop-blur-xl md:p-6">
+              <div className="mb-4 flex justify-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full border border-yellow-300/50 bg-linear-to-br from-red-800 to-red-950 shadow-[0_0_25px_rgba(234,179,8,0.15)]">
+                  <Gift className="h-9 w-9 text-yellow-300" />
+                </div>
+              </div>
 
-        <h1 className="text-5xl md:text-8xl font-bold mb-8 font-serif text-transparent bg-clip-text bg-linear-to-b from-yellow-300 to-yellow-600 drop-shadow-[0_5px_5px_rgba(0,0,0,0.5)]">
-          Giáng Sinh {currentYear}
-        </h1>
+              <h2 className="mb-3 font-serif text-xl font-bold text-yellow-300 md:text-2xl">Cây Giáng Sinh</h2>
+              <p className="text-sm leading-relaxed text-red-100/90">Mỗi mùa lễ hội, một cây quà mới, lưu giữ yêu thương qua năm tháng.</p>
 
-        <div className="mb-6 scale-110">
-          <ChristmasCountdown />
-        </div>
+              <div className="my-5 h-px bg-linear-to-r from-transparent via-yellow-400/40 to-transparent" />
 
-        {user ? (
-          <div className="animate-fade-in-up flex flex-col items-center gap-4">
-            {isDecember ? (
-              <Link
-                href="/create"
-                className="group relative inline-flex items-center gap-3 px-8 py-4 bg-red-600 hover:bg-red-700 text-white rounded-2xl font-bold text-xl shadow-[0_0_20px_rgba(220,38,38,0.5)] transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(220,38,38,0.7)]"
-              >
-                <Gift className="w-6 h-6 animate-bounce" />
-                <span>Gửi Món Quà Mới</span>
-                <div className="absolute inset-0 rounded-2xl ring-4 ring-white/30 group-hover:ring-white/50 transition-all"></div>
-              </Link>
-            ) : (
-              <button
-                disabled
-                className="group relative inline-flex items-center gap-3 px-8 py-4 bg-gray-400 text-white rounded-2xl font-bold text-xl cursor-not-allowed shadow-none grayscale opacity-70"
-              >
-                <Clock className="w-6 h-6" />
-                <span>Hẹn gặp lại tháng 12!</span>
-                <div className="absolute inset-0 rounded-2xl ring-4 ring-white/10"></div>
-              </button>
-            )}
+              <div className="space-y-3 text-left text-sm text-white/80">
+                <p className="flex items-start gap-3"><span className="text-xl">🎄</span><span>Mỗi năm một cây, lưu giữ kỷ niệm riêng.</span></p>
+                <p className="flex items-start gap-3"><span className="text-xl">🎁</span><span>Chia sẻ cây để bạn bè gửi quà và lời chúc.</span></p>
+                <p className="flex items-start gap-3"><span className="text-xl">🔒</span><span>Mở quà sau ngày 25/12, giữ trọn bất ngờ.</span></p>
+              </div>
+            </div>
+          </section>
 
-            {!isDecember && (
-              <p className="text-white mt-2 text-sm opacity-80 italic">
-                Cỗ xe tuần lộc đang nghỉ ngơi, hãy quay lại vào mùa Giáng sinh tới nhé!
+          {/* CENTER: CHRISTMAS COUNTDOWN */}
+          <section className="order-1 flex w-full min-w-0 flex-col items-center justify-center lg:col-span-6 lg:col-start-4 lg:order-2">
+            <div className="mb-5 text-center">
+              <div className="mb-3 flex items-center justify-center gap-2 text-sm font-bold uppercase tracking-[0.25em] text-yellow-200 drop-shadow-lg md:text-base">
+                <Sparkles className="h-4 w-4" />
+                <span>Mùa yêu thương</span>
+                <Sparkles className="h-4 w-4" />
+              </div>
+
+              <h1 className="bg-linear-to-b from-yellow-200 via-yellow-400 to-amber-600 bg-clip-text font-serif text-4xl font-black uppercase leading-tight text-transparent drop-shadow-[0_5px_5px_rgba(0,0,0,0.7)] sm:text-5xl md:text-6xl lg:text-7xl">Giáng Sinh</h1>
+
+              <p className="mt-1 font-serif text-3xl font-bold tracking-[0.3em] text-transparent bg-linear-to-b from-yellow-100 via-yellow-300 to-amber-500 bg-clip-text drop-shadow-[0_3px_8px_rgba(234,179,8,0.4)] md:text-4xl">
+                {currentYear ?? '••••'}
               </p>
-            )}
+            </div>
 
-            <Link
-              href="/my-gifts"
-              className="text-yellow-300 hover:text-yellow-100 font-bold underline decoration-dotted underline-offset-4 flex items-center gap-2 transition"
-            >
-              <Gift className="w-4 h-4" /> Xem lại các món quà đã gửi
+            <div className="w-full rounded-3xl border border-yellow-400/25 bg-black/25 px-2 py-6 shadow-2xl backdrop-blur-sm sm:px-4 md:py-8">
+              <ChristmasCountdown />
+            </div>
+
+            <p className="mt-6 max-w-lg rounded-full border border-white/10 bg-black/25 px-5 py-3 text-center font-handwriting text-xl text-yellow-100 shadow-lg backdrop-blur-sm md:text-2xl">“Trao yêu thương, nhận hạnh phúc” ✨</p>
+          </section>
+
+          {/* RIGHT: TREE & GIFT ACTIONS */}
+          <section className="order-3 flex w-full flex-col gap-3 lg:col-span-3 lg:col-start-10 lg:order-3">
+            <Link href="/my-trees" className="group block rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-green-300">
+              <div className="flex items-center gap-3 rounded-2xl border-2 border-green-400/40 bg-linear-to-r from-green-900/90 to-green-950/90 p-4 shadow-xl backdrop-blur-md transition duration-300 hover:-translate-y-1 hover:border-green-300 hover:shadow-[0_10px_30px_rgba(34,197,94,0.15)]">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-green-300/20 bg-green-400/10 text-green-300 transition group-hover:scale-110">
+                  <TreePine className="h-7 w-7" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h2 className="font-serif text-lg font-bold text-green-300">Cây của tôi</h2>
+                  <p className="mt-1 text-xs leading-relaxed text-green-100/80">Cây quà và kỷ niệm mỗi mùa</p>
+                </div>
+                <span className="text-lg text-green-300 transition group-hover:translate-x-1">→</span>
+              </div>
             </Link>
 
-            <p className="mt-4 text-white/80 text-sm">Hãy trao đi yêu thương ngay hôm nay ✨</p>
-          </div>
-        ) : (
-          <div className="max-w-md mx-auto bg-black/30 backdrop-blur-md p-6 rounded-2xl border border-white/10">
-            <p className="text-lg mb-4">Đăng nhập để gửi những lời chúc bí mật đến người thân yêu!</p>
-            <Link
-              href="/login"
-              className="inline-block bg-yellow-400 text-red-900 px-8 py-3 rounded-full font-bold shadow-lg hover:scale-105 transition"
-            >
-              Tham gia ngay
+            <Link href="/snowflake-game" className="group block rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-sky-200">
+              <div className="flex items-center gap-3 rounded-2xl border border-sky-200/20 bg-linear-to-r from-slate-900/90 to-slate-800/90 p-3.5 shadow-lg backdrop-blur-md transition duration-300 hover:-translate-y-0.5 hover:border-sky-200/50 hover:shadow-[0_8px_24px_rgba(125,211,252,0.08)]">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-sky-200/15 bg-sky-300/10 text-sky-200 transition group-hover:scale-110">
+                  <Snowflake className="h-6 w-6" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h2 className="font-serif text-base font-bold text-sky-200">Săn Bông Tuyết</h2>
+                  <p className="mt-1 text-xs leading-relaxed text-slate-200/70">Chơi nhanh, kiếm tuyết mỗi ngày</p>
+                </div>
+                <span className="text-sm text-sky-200 transition group-hover:translate-x-1">→</span>
+              </div>
             </Link>
-          </div>
-        )}
-      </main>
 
-      <footer className="absolute bottom-4 w-full text-center text-white/40 text-xs z-10">
-        Designed with ❤️ for Christmas by hvt299
+            <Link href="/mini-games" className="group block rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-yellow-300">
+              <div className="relative overflow-hidden rounded-2xl border border-yellow-400/30 bg-linear-to-br from-red-900/95 via-red-950/95 to-red-950 p-4 shadow-xl backdrop-blur-md transition duration-300 hover:-translate-y-1 hover:border-yellow-400/60 hover:shadow-[0_10px_30px_rgba(234,179,8,0.12)]">
+                <div className="pointer-events-none absolute -right-3 -top-4 text-6xl opacity-10 transition group-hover:rotate-12">🎮</div>
+                <div className="relative flex items-start gap-3">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-yellow-300/20 bg-yellow-400/10 text-yellow-300 transition group-hover:scale-110">
+                    <Gamepad2 className="h-6 w-6" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h2 className="font-serif text-lg font-bold text-yellow-300">Mini Games</h2>
+                    <p className="mt-1 text-xs leading-relaxed text-red-100/80">Thử thách bản thân, kiếm hoặc tiêu bông tuyết.</p>
+                    <p className="mt-3 text-xs font-bold text-yellow-200 transition group-hover:text-yellow-100">Khám phá trò chơi →</p>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          </section>
+        </div>
+      </div>
+
+      {/* FOOTER */}
+      <footer className="relative z-10 mt-auto w-full border-t border-yellow-400/10 bg-black/20 px-4 py-5 text-center text-xs text-white/50 backdrop-blur-sm md:text-sm">
+        <p>© {currentYear ?? new Date().getFullYear()} Christmas Wishes</p>
+        <p className="mt-1 text-yellow-100/40">Made with ❤️ for a magical Christmas</p>
       </footer>
 
-      {/* 4. POPUP MỜI ĐĂNG NHẬP (Hiển thị khi showPopup = true) */}
+      {/* LOGIN POPUP */}
       {showPopup && !user && (
-        <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-300">
-          <div className="bg-red-900 border-4 border-yellow-400 p-8 rounded-3xl shadow-2xl relative max-w-sm w-full text-center transform transition-all scale-100">
-
-            {/* Nút Close góc trên phải */}
-            <button
-              onClick={() => setShowPopup(false)}
-              className="absolute top-3 right-3 text-white/70 hover:text-white bg-black/20 hover:bg-black/40 rounded-full p-1 transition"
-              title="Đóng"
-            >
-              <X className="w-5 h-5" />
+        <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/70 px-4 py-6 backdrop-blur-md animate-in fade-in duration-300" onClick={() => setShowPopup(false)}>
+          <div role="dialog" aria-modal="true" aria-labelledby="christmas-popup-title" className="relative w-full max-w-sm rounded-3xl border-2 border-yellow-400 bg-linear-to-b from-red-900 via-red-950 to-green-950 p-7 text-center shadow-[0_0_50px_rgba(234,179,8,0.2)] sm:p-8" onClick={(event) => event.stopPropagation()}>
+            <button type="button" onClick={() => setShowPopup(false)} className="absolute right-3 top-3 rounded-full p-2 text-red-200 transition hover:bg-white/10 hover:text-yellow-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400" title="Đóng" aria-label="Đóng thông báo">
+              <X className="h-5 w-5" />
             </button>
 
-            {/* Nội dung Popup */}
-            <Gift className="w-16 h-16 mx-auto mb-4 text-yellow-300 animate-bounce" />
-            <h2 className="text-2xl font-bold font-serif text-white mb-2">Trạm Quà Giáng Sinh</h2>
-            <p className="text-red-100 mb-6 text-sm">
-              Đăng nhập ngay để tự tay gói những hộp quà bí mật gửi tặng người thân yêu nhé! 🎅🎁
-            </p>
+            <div className="mb-4 flex justify-center">
+              <div className="flex h-20 w-20 items-center justify-center rounded-full border border-yellow-300/50 bg-yellow-400/10 shadow-inner">
+                <Gift className="h-12 w-12 animate-bounce text-yellow-300" />
+              </div>
+            </div>
 
-            <Link
-              href="/login"
-              className="inline-block bg-yellow-400 text-red-900 px-6 py-3 rounded-full font-bold shadow-lg hover:bg-yellow-300 hover:scale-105 transition w-full"
-            >
+            <div className="mb-2 flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-yellow-200">
+              <Sparkles className="h-4 w-4" />
+              Mùa lễ hội
+              <Sparkles className="h-4 w-4" />
+            </div>
+
+            <h2 id="christmas-popup-title" className="mb-3 font-serif text-2xl font-bold text-yellow-300">Trạm Quà Giáng Sinh</h2>
+            <p className="mb-6 text-sm leading-relaxed text-red-100">Đăng nhập ngay để tự tay gói những hộp quà bí mật và gửi lời chúc ấm áp đến người thân yêu nhé! 🎅🎁</p>
+
+            <Link href="/login" className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-linear-to-r from-yellow-500 to-yellow-300 px-6 py-3 font-bold text-red-950 shadow-lg transition hover:scale-105 hover:from-yellow-300 hover:to-yellow-200">
+              <Gift className="h-5 w-5" />
               Đăng nhập / Đăng ký
             </Link>
+
+            <p className="mt-4 text-xs text-white/50">Giáng Sinh thêm trọn vẹn khi có bạn ✨</p>
           </div>
         </div>
       )}
-    </div>
+    </main>
   )
 }

@@ -10,17 +10,23 @@ export function middleware(request: NextRequest) {
     pathname.startsWith('/forgot-password') ||
     pathname.startsWith('/reset-password');
 
+  // Trang cần đăng nhập: /my-trees (quản lý cây của mình), /profile, /my-gifts, /create
+  // Chú ý: /my-trees/[id] là trang công khai để bạn bè có thể xem cây thông và gửi quà!
+  const isMyTreesRoot = pathname === '/my-trees' || pathname === '/my-trees/';
   const isProtectedRoute =
+    isMyTreesRoot ||
     pathname.startsWith('/create') ||
     pathname.startsWith('/my-gifts') ||
     pathname.startsWith('/profile');
 
   if (isAuthRoute && token) {
-    return NextResponse.redirect(new URL('/', request.url));
+    return NextResponse.redirect(new URL('/my-trees', request.url));
   }
 
   if (isProtectedRoute && !token) {
-    return NextResponse.redirect(new URL('/login', request.url));
+    const loginUrl = new URL('/login', request.url);
+    loginUrl.searchParams.set('redirect', pathname);
+    return NextResponse.redirect(loginUrl);
   }
 
   return NextResponse.next();
@@ -28,7 +34,6 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/',
     '/login',
     '/forgot-password',
     '/reset-password',
@@ -36,6 +41,8 @@ export const config = {
     '/create',
     '/my-gifts',
     '/profile',
-    '/gifts/:path*'
+    '/my-trees',
+    '/my-trees/:path*',
+    '/gifts/:path*',
   ],
 };
