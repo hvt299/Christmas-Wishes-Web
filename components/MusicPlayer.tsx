@@ -48,7 +48,7 @@ export default function MusicPlayer() {
       <audio ref={audioRef} src={currentSongUrl || ''} loop />
 
       {showVolume && (
-        <div className="absolute bottom-16 right-0 w-56 rounded-2xl border border-yellow-300/30 bg-gradient-to-br from-red-900/95 via-red-950/95 to-green-950/95 p-4 shadow-[0_0_25px_rgba(234,179,8,0.2)] backdrop-blur-xl animate-in fade-in slide-in-from-bottom-2 duration-200 md:bottom-[4.5rem]">
+        <div className="absolute bottom-16 right-0 w-56 rounded-2xl border border-yellow-300/30 bg-linear-to-br from-red-900/95 via-red-950/95 to-green-950/95 p-4 shadow-[0_0_25px_rgba(234,179,8,0.2)] backdrop-blur-xl animate-in fade-in slide-in-from-bottom-2 duration-200 md:bottom-18">
           <div className="mb-3 flex items-center gap-2">
             <Sparkles className="h-4 w-4 text-yellow-300" />
             <span className="font-serif text-sm font-bold text-yellow-200">Âm lượng Giáng Sinh</span>
@@ -69,7 +69,7 @@ export default function MusicPlayer() {
       )}
 
       {!isPlaying && !showVolume && (
-        <div className="absolute bottom-16 right-0 w-48 animate-bounce rounded-2xl border border-yellow-300/40 bg-gradient-to-br from-red-900/95 via-red-950/95 to-green-950/95 p-3 text-center shadow-[0_0_25px_rgba(234,179,8,0.15)] backdrop-blur-xl md:bottom-[4.5rem]">
+        <div className="absolute bottom-16 right-0 w-48 animate-bounce rounded-2xl border border-yellow-300/40 bg-linear-to-br from-red-900/95 via-red-950/95 to-green-950/95 p-3 text-center shadow-[0_0_25px_rgba(234,179,8,0.15)] backdrop-blur-xl md:bottom-18">
           <div className="mb-1 flex items-center justify-center gap-1.5 text-yellow-300">
             <Sparkles className="h-3.5 w-3.5" />
             <span className="text-xs font-bold tracking-wide">Giai điệu mùa lễ hội</span>
@@ -81,9 +81,9 @@ export default function MusicPlayer() {
       )}
 
       <div className="relative">
-        <button type="button" onClick={togglePlay} title={isPlaying ? 'Tạm dừng nhạc' : 'Phát nhạc Giáng Sinh'} aria-label={isPlaying ? 'Tạm dừng nhạc' : 'Phát nhạc Giáng Sinh'} aria-pressed={isPlaying} className={`group relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border-2 border-yellow-300/70 shadow-[0_0_20px_rgba(234,179,8,0.2)] backdrop-blur-xl transition-all duration-300 hover:scale-110 hover:border-yellow-200 hover:shadow-[0_0_30px_rgba(234,179,8,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-200 focus-visible:ring-offset-2 focus-visible:ring-offset-red-950 md:h-14 md:w-14 ${isPlaying ? 'bg-gradient-to-br from-yellow-300 via-yellow-500 to-amber-700' : 'bg-gradient-to-br from-red-800/95 via-red-950/95 to-green-950/95'}`}>
+        <button type="button" onClick={togglePlay} title={isPlaying ? 'Tạm dừng nhạc' : 'Phát nhạc Giáng Sinh'} aria-label={isPlaying ? 'Tạm dừng nhạc' : 'Phát nhạc Giáng Sinh'} aria-pressed={isPlaying} className={`group relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border-2 border-yellow-300/70 shadow-[0_0_20px_rgba(234,179,8,0.2)] backdrop-blur-xl transition-all duration-300 hover:scale-110 hover:border-yellow-200 hover:shadow-[0_0_30px_rgba(234,179,8,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-200 focus-visible:ring-offset-2 focus-visible:ring-offset-red-950 md:h-14 md:w-14 ${isPlaying ? 'bg-linear-to-br from-yellow-300 via-yellow-500 to-amber-700' : 'bg-linear-to-br from-red-800/95 via-red-950/95 to-green-950/95'}`}>
           <span className="pointer-events-none absolute inset-1 rounded-full border border-white/15" />
-          <span className={`pointer-events-none absolute inset-0 rounded-full bg-gradient-to-tr from-yellow-300/10 via-transparent to-white/10 transition-opacity duration-300 ${isPlaying ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`} />
+          <span className={`pointer-events-none absolute inset-0 rounded-full bg-linear-to-tr from-yellow-300/10 via-transparent to-white/10 transition-opacity duration-300 ${isPlaying ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`} />
 
           {isPlaying ? (
             <Disc3 className="relative z-10 h-5 w-5 animate-spin text-red-950 md:h-6 md:w-6" />

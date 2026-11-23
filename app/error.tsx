@@ -18,7 +18,7 @@ export default function Error({
     return (
         <main className="relative isolate flex min-h-screen items-center justify-center overflow-hidden bg-red-950 px-4 py-10 font-sans text-white">
             {/* BACKGROUND EFFECTS */}
-            <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-gradient-to-b from-red-950 via-red-950 to-green-950">
+            <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-linear-to-b from-red-950 via-red-950 to-green-950">
                 <div className="absolute -left-32 -top-32 h-96 w-96 rounded-full bg-red-500/20 blur-[100px]" />
                 <div className="absolute -bottom-32 -right-20 h-96 w-96 rounded-full bg-yellow-300/10 blur-[100px]" />
                 <Snowflake className="absolute left-[8%] top-[20%] h-10 w-10 text-yellow-100/15" />
@@ -63,7 +63,7 @@ export default function Error({
                         <button
                             type="button"
                             onClick={() => reset()}
-                            className="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-yellow-200/40 bg-gradient-to-r from-amber-400 to-yellow-300 px-6 py-3 text-sm font-bold text-[#35150e] shadow-lg transition hover:from-amber-300 hover:to-yellow-200"
+                            className="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-yellow-200/40 bg-linear-to-r from-amber-400 to-yellow-300 px-6 py-3 text-sm font-bold text-[#35150e] shadow-lg transition hover:from-amber-300 hover:to-yellow-200"
                         >
                             <RefreshCw className="h-4 w-4" />
                             <span>Thử lại ngay</span>

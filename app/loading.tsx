@@ -4,7 +4,7 @@ export default function Loading() {
     return (
         <main className="relative isolate flex min-h-screen items-center justify-center overflow-hidden bg-red-950 px-4 font-sans text-white">
             {/* BACKGROUND EFFECTS */}
-            <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-gradient-to-b from-red-950 via-red-950 to-green-950">
+            <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-linear-to-b from-red-950 via-red-950 to-green-950">
                 <div className="absolute -left-32 -top-32 h-96 w-96 rounded-full bg-red-500/20 blur-[100px]" />
                 <div className="absolute -bottom-32 -right-20 h-96 w-96 rounded-full bg-yellow-300/10 blur-[100px]" />
                 <Snowflake className="absolute left-[8%] top-[20%] h-10 w-10 text-yellow-100/15" />

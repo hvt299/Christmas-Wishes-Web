@@ -88,7 +88,7 @@ export default function ChristmasTreeScene({
     const isAurora = activeTheme === 'aurora'
 
     return (
-        <div className="relative mx-auto w-full max-w-[500px] select-none py-2" aria-label={`Cây thông ${themeConfig.name}`}>
+        <div className="relative mx-auto w-full max-w-125 select-none py-2" aria-label={`Cây thông ${themeConfig.name}`}>
             {/* Aurora Background Veil (Aurora Theme only) */}
             {isAurora && (
                 <div

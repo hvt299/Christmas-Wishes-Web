@@ -47,7 +47,7 @@ export default function GiftLetter({ wish, senderName, senderAvatar, createdAt, 
             <div className="cw-gift-letter__body">
                 <div className="mb-5 flex items-center gap-3">
                     {senderAvatar ? (
-                        <img src={senderAvatar} alt={senderName} className="h-11 w-11 rounded-full border-2 border-amber-200 object-cover" />
+                        <img src={senderAvatar} alt={senderName} className="h-11 w-11 rounded-full border-2 border-amber-200 object-cover" referrerPolicy="no-referrer" />
                     ) : (
                         <div className="flex h-11 w-11 items-center justify-center rounded-full bg-emerald-100 text-lg font-bold text-emerald-800">
                             {initial}
@@ -61,7 +61,7 @@ export default function GiftLetter({ wish, senderName, senderAvatar, createdAt, 
                 </div>
 
                 {message ? (
-                    <p className="whitespace-pre-wrap break-words text-base leading-8 text-gray-800">{message}</p>
+                    <p className="whitespace-pre-wrap wrap-break-word text-base leading-8 text-gray-800">{message}</p>
                 ) : (
                     <div className="py-6 text-center">
                         <Mail size={32} className="mx-auto mb-3 text-amber-500" />

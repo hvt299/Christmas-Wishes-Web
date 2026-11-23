@@ -823,6 +823,22 @@ body {
   animation: cw-gift-lid-open 0.9s 1s forwards;
 }
 
+.cw-gift-opening.is-opening .cw-gift-box__bow {
+  transform-origin: 50% 50%;
+  animation: cw-gift-bow-open 0.9s 1s ease-in forwards;
+}
+
+@keyframes cw-gift-bow-open {
+  0% {
+    transform: translateX(-50%) translate(0, 0) rotate(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-50%) translate(-24px, -110px) rotate(-30deg);
+    opacity: 0;
+  }
+}
+
 .cw-gift-opening__glow {
   position: absolute;
   top: 22%;

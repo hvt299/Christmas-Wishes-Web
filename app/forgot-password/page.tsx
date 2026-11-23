@@ -29,15 +29,15 @@ export default function ForgotPasswordPage() {
 
     const inputClass = 'w-full rounded-xl border border-yellow-400/15 bg-black/25 py-3 pl-11 pr-4 font-sans text-sm text-white placeholder:text-white/40 outline-none transition duration-300 focus:border-yellow-300/60 focus:ring-2 focus:ring-yellow-400/10'
     const labelClass = 'mb-2 block font-sans text-sm font-medium text-yellow-50/90'
-    const primaryButtonClass = 'flex w-full items-center justify-center gap-2 rounded-full border border-yellow-300/70 bg-gradient-to-r from-yellow-500 to-yellow-300 py-3.5 font-sans text-sm font-bold text-red-950 shadow-lg transition duration-300 hover:scale-[1.02] hover:from-yellow-300 hover:to-yellow-200 hover:shadow-[0_8px_30px_rgba(234,179,8,0.2)] active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-200 focus-visible:ring-offset-2 focus-visible:ring-offset-red-950 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100'
+    const primaryButtonClass = 'flex w-full items-center justify-center gap-2 rounded-full border border-yellow-300/70 bg-linear-to-r from-yellow-500 to-yellow-300 py-3.5 font-sans text-sm font-bold text-red-950 shadow-lg transition duration-300 hover:scale-[1.02] hover:from-yellow-300 hover:to-yellow-200 hover:shadow-[0_8px_30px_rgba(234,179,8,0.2)] active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-200 focus-visible:ring-offset-2 focus-visible:ring-offset-red-950 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100'
 
     return (
         <main className="relative isolate flex min-h-screen items-center justify-center overflow-hidden bg-red-950 px-4 py-10 font-sans text-white selection:bg-yellow-400 selection:text-red-950 sm:px-8">
             {/* BACKGROUND */}
-            <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden bg-gradient-to-b from-red-950 via-red-950 to-green-950">
+            <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden bg-linear-to-b from-red-950 via-red-950 to-green-950">
                 <div className="absolute -left-32 -top-32 h-96 w-96 rounded-full bg-red-500/20 blur-[100px]" />
                 <div className="absolute -bottom-32 -right-20 h-96 w-96 rounded-full bg-yellow-300/10 blur-[100px]" />
-                <div className="absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-yellow-500/[0.04] blur-[120px]" />
+                <div className="absolute left-1/2 top-1/2 h-125 w-125 -translate-x-1/2 -translate-y-1/2 rounded-full bg-yellow-500/4 blur-[120px]" />
                 <Snowflake className="absolute left-[8%] top-[12%] h-10 w-10 text-yellow-100/20" />
                 <Snowflake className="absolute right-[12%] top-[20%] h-14 w-14 animate-spin text-yellow-100/20" />
                 <Snowflake className="absolute bottom-[15%] left-[15%] h-9 w-9 text-white/15" />
@@ -55,12 +55,12 @@ export default function ForgotPasswordPage() {
             {/* MAIN CARD */}
             <div className="relative z-10 w-full max-w-lg">
                 <section className="overflow-hidden rounded-3xl border border-yellow-400/25 bg-black/30 shadow-[0_25px_80px_rgba(0,0,0,0.4)] backdrop-blur-xl">
-                    <div className="h-1 w-full bg-gradient-to-r from-transparent via-yellow-400 to-transparent" />
+                    <div className="h-1 w-full bg-linear-to-r from-transparent via-yellow-400 to-transparent" />
 
                     <div className="p-5 sm:p-10">
                         {/* HEADER */}
                         <div className="mb-7 text-center">
-                            <div className="relative mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-2xl border border-yellow-400/30 bg-gradient-to-br from-red-900/90 to-red-950 shadow-[0_0_35px_rgba(234,179,8,0.12)]">
+                            <div className="relative mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-2xl border border-yellow-400/30 bg-linear-to-br from-red-900/90 to-red-950 shadow-[0_0_35px_rgba(234,179,8,0.12)]">
                                 <div className="absolute inset-1 rounded-xl border border-yellow-300/10" />
                                 <KeyRound className="relative h-10 w-10 text-yellow-300" />
                                 <Sparkles className="absolute -right-2 -top-2 h-6 w-6 text-yellow-200" />
@@ -78,7 +78,7 @@ export default function ForgotPasswordPage() {
                         </div>
 
                         {/* INFORMATION CARD */}
-                        <div className="mb-6 rounded-2xl border border-yellow-400/20 bg-gradient-to-r from-red-900/40 to-red-950/40 p-4 shadow-lg">
+                        <div className="mb-6 rounded-2xl border border-yellow-400/20 bg-linear-to-r from-red-900/40 to-red-950/40 p-4 shadow-lg">
                             <div className="flex items-start gap-3">
                                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-yellow-300/20 bg-yellow-400/10">
                                     <Mail className="h-5 w-5 text-yellow-300" />

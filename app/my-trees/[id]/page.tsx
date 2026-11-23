@@ -28,7 +28,8 @@ import GiftRevealModal from '@/components/tree-detail/GiftRevealModal'
 import PublicGiftModal from '@/components/tree-detail/PublicGiftModal'
 import SendGiftModal from '@/components/tree-detail/SendGiftModal'
 import EditTreeModal from '@/components/tree-detail/EditTreeModal'
-import { TREE_ITEMS_PER_PAGE, getThemeConfig } from '@/constants/tree-decorations'
+import { TREE_DECORATION_CATALOG, TREE_ITEMS_PER_PAGE, getThemeConfig } from '@/constants/tree-decorations'
+import { getGiftColorClass, renderDecorationSvg } from '@/components/tree-detail/TreeDecoration'
 import type {
     TreeDecorationType,
     TreeDetail,
@@ -42,7 +43,7 @@ const ITEMS_PER_PAGE = TREE_ITEMS_PER_PAGE
 
 const sectionClass = 'rounded-3xl border border-amber-200/15 bg-[#071b16]/50 shadow-[0_20px_60px_rgba(0,0,0,0.35)] backdrop-blur-xl'
 const buttonClass = 'inline-flex items-center justify-center gap-2 rounded-full border border-yellow-300/40 bg-black/25 px-4 py-2 text-sm font-semibold text-yellow-100 transition duration-300 hover:border-yellow-300/70 hover:bg-yellow-400/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-300 disabled:cursor-not-allowed disabled:opacity-50'
-const primaryButtonClass = 'inline-flex items-center justify-center gap-2 rounded-full border border-yellow-200/40 bg-gradient-to-r from-amber-400 to-yellow-300 px-6 py-3 text-sm font-bold text-[#35150e] shadow-lg transition hover:from-amber-300 hover:to-yellow-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-200 disabled:cursor-not-allowed disabled:opacity-50'
+const primaryButtonClass = 'inline-flex items-center justify-center gap-2 rounded-full border border-yellow-200/40 bg-linear-to-r from-amber-400 to-yellow-300 px-6 py-3 text-sm font-bold text-[#35150e] shadow-lg transition hover:from-amber-300 hover:to-yellow-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-200 disabled:cursor-not-allowed disabled:opacity-50'
 
 type Notice = {
     type: 'success' | 'error' | 'info'
@@ -89,9 +90,9 @@ const getGiftId = (gift: TreeGift): string | undefined => {
 }
 
 const getThemeBar = (theme?: string) => {
-    if (theme === 'winter') return 'bg-gradient-to-r from-transparent via-sky-300 to-transparent'
-    if (theme === 'aurora') return 'bg-gradient-to-r from-transparent via-emerald-300 via-purple-300 to-transparent'
-    return 'bg-gradient-to-r from-transparent via-yellow-300 to-transparent'
+    if (theme === 'winter') return 'bg-linear-to-r from-transparent via-sky-300 to-transparent'
+    if (theme === 'aurora') return 'bg-linear-to-r from-transparent via-emerald-300 via-purple-300 to-transparent'
+    return 'bg-linear-to-r from-transparent via-yellow-300 to-transparent'
 }
 
 const getGiftColor = (theme?: string): 'red' | 'green' | 'gold' | 'blue' | 'purple' => {
@@ -487,6 +488,7 @@ export default function TreeDetailPage() {
                                     src={tree.owner.avatar}
                                     alt={ownerName}
                                     className="h-5 w-5 rounded-full object-cover"
+                                    referrerPolicy="no-referrer"
                                 />
                             ) : (
                                 <UserRound className="h-4 w-4 text-yellow-300" />
@@ -508,13 +510,12 @@ export default function TreeDetailPage() {
                     <div
                         role="status"
                         aria-live="polite"
-                        className={`mx-auto mb-6 flex max-w-4xl items-start gap-3 rounded-2xl border p-4 text-sm shadow-xl backdrop-blur-xl ${
-                            notice.type === 'success'
+                        className={`mx-auto mb-6 flex max-w-4xl items-start gap-3 rounded-2xl border p-4 text-sm shadow-xl backdrop-blur-xl ${notice.type === 'success'
                                 ? 'border-green-300/30 bg-green-950/70 text-green-100'
                                 : notice.type === 'info'
                                     ? 'border-yellow-300/30 bg-yellow-950/70 text-yellow-100'
                                     : 'border-red-300/30 bg-red-950/70 text-red-100'
-                        }`}
+                            }`}
                     >
                         {notice.type === 'success' ? (
                             <Check className="mt-0.5 h-5 w-5 shrink-0 text-green-300" />
@@ -728,6 +729,15 @@ export default function TreeDetailPage() {
                                     })
                                     : ''
 
+                                const rawOrnamentType = item.ornamentType || item.gift?.ornamentType
+                                const ornamentType: TreeDecorationType =
+                                    rawOrnamentType && rawOrnamentType in TREE_DECORATION_CATALOG
+                                        ? (rawOrnamentType as TreeDecorationType)
+                                        : 'gift_box'
+                                const rawTheme = item.theme || item.gift?.theme
+                                const colorClass = getGiftColorClass(rawTheme)
+                                const ornamentDef = TREE_DECORATION_CATALOG[ornamentType] || TREE_DECORATION_CATALOG.gift_box
+
                                 return (
                                     <div
                                         key={getGiftId(item) || idx}
@@ -736,7 +746,12 @@ export default function TreeDetailPage() {
                                     >
                                         <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-yellow-300/20 bg-yellow-400/10">
                                             {sAvatar ? (
-                                                <img src={sAvatar} alt={sName} className="h-full w-full object-cover" />
+                                                <img
+                                                    src={sAvatar}
+                                                    alt={sName}
+                                                    referrerPolicy="no-referrer"
+                                                    className="h-full w-full object-cover"
+                                                />
                                             ) : (
                                                 <UserRound className="h-6 w-6 text-amber-200" />
                                             )}
@@ -746,13 +761,20 @@ export default function TreeDetailPage() {
                                             <p className="truncate font-serif text-sm font-bold text-white group-hover:text-yellow-200">
                                                 {sName}
                                             </p>
-                                            <p className="mt-0.5 text-xs text-red-100/50">
-                                                {dateStr ? `Gửi ngày ${dateStr}` : 'Vừa gửi gần đây'}
-                                            </p>
+                                            <div className="mt-0.5 flex items-center gap-1.5 text-xs text-red-100/60">
+                                                <span className="truncate">{ornamentDef.label}</span>
+                                                {dateStr && <span className="shrink-0">• {dateStr}</span>}
+                                            </div>
                                         </div>
 
-                                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-yellow-400/10 text-yellow-300 transition group-hover:scale-110">
-                                            <Gift className="h-4 w-4" />
+                                        {/* Món quà thật sự (Vector SVG Ornament tương ứng với món quà và màu sắc thực tế) */}
+                                        <div
+                                            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-yellow-300/20 bg-yellow-400/10 p-1.5 text-yellow-300 shadow-inner transition duration-300 group-hover:scale-110 group-hover:border-yellow-300/50 group-hover:bg-yellow-400/20"
+                                            title={ornamentDef.label}
+                                        >
+                                            <div className="h-7 w-7">
+                                                {renderDecorationSvg(ornamentType, colorClass)}
+                                            </div>
                                         </div>
                                     </div>
                                 )
@@ -784,6 +806,8 @@ export default function TreeDetailPage() {
                     isOpen={showEditTree}
                     treeName={tree.name}
                     treeTheme={currentTheme}
+                    treeYear={tree.year}
+                    existingGifts={tree.gifts}
                     onClose={() => setShowEditTree(false)}
                     onSubmit={handleUpdateTree}
                 />
@@ -798,8 +822,8 @@ export default function TreeDetailPage() {
                     senderName={selectedGift.sender?.fullName || selectedGift.sender?.username || 'Người gửi ẩn danh'}
                     senderAvatar={selectedGift.sender?.avatar}
                     createdAt={selectedGift.createdAt}
-                    ornamentType={selectedGift.ornamentType}
-                    giftColor={getGiftColor(revealedGiftContent?.theme || selectedGift.gift?.theme)}
+                    ornamentType={(selectedGift.ornamentType || selectedGift.gift?.ornamentType || revealedGiftContent?.ornamentType || 'gift_box') as TreeDecorationType}
+                    giftColor={getGiftColor(revealedGiftContent?.theme || selectedGift.theme || selectedGift.gift?.theme)}
                     onClose={handleCloseGift}
                 />
             )}

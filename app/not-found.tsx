@@ -13,7 +13,7 @@ export default function NotFound() {
                 <Snowflake className="absolute right-[12%] top-[20%] h-14 w-14 animate-spin-slow text-yellow-100/20" />
                 <Snowflake className="absolute bottom-[15%] left-[15%] h-9 w-9 text-white/15" />
                 <Snowflake className="absolute bottom-[12%] right-[10%] h-8 w-8 text-white/20" />
-                <Snowflake className="absolute left-1/2 top-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2 text-white/[0.03]" />
+                <Snowflake className="absolute left-1/2 top-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2 text-white/3" />
             </div>
 
             {/* MAIN CONTENT */}
@@ -33,7 +33,7 @@ export default function NotFound() {
                         <Sparkles className="h-4 w-4" />
                     </div>
 
-                    <h1 className="bg-gradient-to-b from-yellow-200 via-yellow-400 to-amber-600 bg-clip-text font-serif text-8xl font-black leading-tight text-transparent drop-shadow-[0_5px_5px_rgba(0,0,0,0.4)] sm:text-9xl">
+                    <h1 className="bg-linear-to-b from-yellow-200 via-yellow-400 to-amber-600 bg-clip-text font-serif text-8xl font-black leading-tight text-transparent drop-shadow-[0_5px_5px_rgba(0,0,0,0.4)] sm:text-9xl">
                         404
                     </h1>
 
@@ -61,7 +61,7 @@ export default function NotFound() {
                     </div>
 
                     {/* HOME BUTTON */}
-                    <Link href="/" className="group mt-6 flex w-full items-center justify-center gap-2 rounded-xl border border-yellow-100/30 bg-gradient-to-r from-yellow-500 to-yellow-200 py-3.5 font-sans text-sm font-bold text-red-950 shadow-[0_4px_20px_rgba(234,179,8,0.15)] transition-all duration-300 hover:-translate-y-0.5 hover:from-yellow-300 hover:to-yellow-100 hover:shadow-[0_8px_30px_rgba(234,179,8,0.25)] active:translate-y-0 active:scale-[0.99]">
+                    <Link href="/" className="group mt-6 flex w-full items-center justify-center gap-2 rounded-xl border border-yellow-100/30 bg-linear-to-r from-yellow-500 to-yellow-200 py-3.5 font-sans text-sm font-bold text-red-950 shadow-[0_4px_20px_rgba(234,179,8,0.15)] transition-all duration-300 hover:-translate-y-0.5 hover:from-yellow-300 hover:to-yellow-100 hover:shadow-[0_8px_30px_rgba(234,179,8,0.25)] active:translate-y-0 active:scale-[0.99]">
                         <Home className="h-5 w-5 transition-transform duration-300 group-hover:-translate-y-0.5" />
                         <span>Quay về trang chủ</span>
                         <Snowflake className="h-4 w-4 text-red-950/60 transition-transform duration-500 group-hover:rotate-180" />
