@@ -13,7 +13,7 @@
   </p>
 
   <p>
-    <img src="https://img.shields.io/badge/Next.js-16.4.3-black?logo=next.js&logoColor=white" alt="Next.js">
+    <img src="https://img.shields.io/badge/Next.js-16.4.6-black?logo=next.js&logoColor=white" alt="Next.js">
     <img src="https://img.shields.io/badge/React-19.2.6-61DAFB?logo=react&logoColor=black" alt="React 19">
     <img src="https://img.shields.io/badge/TailwindCSS-v4.3.3-38bdf8?logo=tailwindcss&logoColor=white" alt="Tailwind CSS v4">
     <img src="https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white" alt="TypeScript">
@@ -66,7 +66,7 @@ Dự án được xây dựng với các công nghệ hiện đại trong hệ s
 
 | Công nghệ / Thư viện | Phiên bản | Vai trò Kỹ thuật |
 | :--- | :--- | :--- |
-| **[Next.js](https://nextjs.org/)** | `16.4.3` | Framework React App Router, Server Components và trình biên dịch Turbopack |
+| **[Next.js](https://nextjs.org/)** | `16.4.6` | Framework React App Router, Server Components và trình biên dịch Turbopack |
 | **[React](https://react.dev/)** | `19.2.6` | Thư viện UI cốt lõi, kiến trúc Component-based |
 | **[react-dom](https://react.dev/learn/rendering-elements)** | `19.2.6` | Thư viện kết xuất DOM cho React |
 | **[TypeScript](https://www.typescriptlang.org/)** | `^5.0.0` | Đảm bảo an toàn kiểu dữ liệu tĩnh trên toàn bộ dự án |

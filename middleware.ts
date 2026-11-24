@@ -10,14 +10,18 @@ export function middleware(request: NextRequest) {
     pathname.startsWith('/forgot-password') ||
     pathname.startsWith('/reset-password');
 
-  // Trang cần đăng nhập: /my-trees (quản lý cây của mình), /profile, /my-gifts, /create
+  // Trang cần đăng nhập:
+  // - /my-trees (quản lý danh sách cây của mình)
+  // - /profile (quản lý thông tin tài khoản)
+  // - /snowflake-game (săn bông tuyết)
+  // - /mini-games (sảnh & các trò chơi mini)
   // Chú ý: /my-trees/[id] là trang công khai để bạn bè có thể xem cây thông và gửi quà!
   const isMyTreesRoot = pathname === '/my-trees' || pathname === '/my-trees/';
   const isProtectedRoute =
     isMyTreesRoot ||
-    pathname.startsWith('/create') ||
-    pathname.startsWith('/my-gifts') ||
-    pathname.startsWith('/profile');
+    pathname.startsWith('/profile') ||
+    pathname.startsWith('/snowflake-game') ||
+    pathname.startsWith('/mini-games');
 
   if (isAuthRoute && token) {
     return NextResponse.redirect(new URL('/my-trees', request.url));
@@ -38,11 +42,11 @@ export const config = {
     '/forgot-password',
     '/reset-password',
     '/auth/verify',
-    '/create',
-    '/my-gifts',
     '/profile',
     '/my-trees',
     '/my-trees/:path*',
-    '/gifts/:path*',
+    '/snowflake-game',
+    '/mini-games',
+    '/mini-games/:path*',
   ],
 };

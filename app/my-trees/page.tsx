@@ -440,81 +440,81 @@ export default function MyTreesPage() {
             </header>
 
             {/* MAIN */}
-            <div className="relative mx-auto w-full max-w-7xl grow px-4 pb-12 pt-28 sm:px-6 md:pt-32">
-                {/* HEADING */}
-                <div className="mb-8 text-center">
-                    <div className="mb-3 flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-yellow-200 sm:text-sm">
-                        <Sparkles className="h-4 w-4" />
+            <div className="relative mx-auto w-full max-w-7xl grow px-4 pb-12 pt-16 sm:px-6 sm:pt-20">
+                {/* HEADING - Gọn gàng, tinh tế & đồng bộ với các trang game */}
+                <div className="mb-4 text-center">
+                    <div className="mb-1 flex items-center justify-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-yellow-200 sm:text-xs">
+                        <Sparkles className="h-3.5 w-3.5" />
                         <span>Mùa yêu thương</span>
-                        <Sparkles className="h-4 w-4" />
+                        <Sparkles className="h-3.5 w-3.5" />
                     </div>
-                    <h1 className="font-serif text-3xl font-black text-yellow-300 drop-shadow-md sm:text-4xl md:text-5xl">
+                    <h1 className="font-serif text-2xl font-black text-yellow-300 drop-shadow-md sm:text-3xl md:text-4xl">
                         Không Gian Giáng Sinh Của Tôi
                     </h1>
-                    <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-red-100/80 sm:text-base">
+                    <p className="mx-auto mt-1 max-w-md text-xs leading-relaxed text-red-100/75 sm:text-sm">
                         Quản lý cây thông Giáng Sinh và những món quà bí mật, lời chúc ấm áp bạn đã gửi trao đến bạn bè.
                     </p>
-                    <div className="mx-auto mt-5 h-px w-32 bg-linear-to-r from-transparent via-yellow-400/70 to-transparent" />
+                    <div className="mx-auto mt-2.5 h-px w-28 bg-linear-to-r from-transparent via-yellow-400/70 to-transparent" />
                 </div>
 
-                {/* SUMMARY */}
-                <div className="mx-auto mb-6 grid max-w-5xl grid-cols-1 gap-4 sm:grid-cols-3">
-                    <div className={`${sectionClass} flex items-center gap-4 p-5`}>
-                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-green-300/20 bg-green-400/10 text-green-200">
-                            <Trees className="h-6 w-6" />
+                {/* SUMMARY METRICS — Scaled & Compact */}
+                <div className="mx-auto mb-4 grid max-w-5xl grid-cols-3 gap-2 sm:gap-3">
+                    <div className={`${sectionClass} flex items-center gap-2.5 p-3 sm:gap-3.5 sm:p-4`}>
+                        <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl border border-green-300/20 bg-green-400/10 text-green-200">
+                            <Trees className="h-4 w-4 sm:h-5 sm:w-5" />
                         </div>
-                        <div>
-                            <p className="text-xs text-white/50">Cây của tôi</p>
-                            <p className="font-serif text-2xl font-bold text-green-200">{trees.length}</p>
-                        </div>
-                    </div>
-
-                    <div className={`${sectionClass} flex items-center gap-4 p-5`}>
-                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-amber-300/20 bg-amber-400/10 text-amber-200">
-                            <Gift className="h-6 w-6" />
-                        </div>
-                        <div>
-                            <p className="text-xs text-white/50">Quà đã gửi bạn bè</p>
-                            <p className="font-serif text-2xl font-bold text-amber-200">{sentGifts.length}</p>
+                        <div className="min-w-0">
+                            <p className="text-[11px] sm:text-xs text-white/50 truncate">Cây của tôi</p>
+                            <p className="font-serif text-lg sm:text-xl md:text-2xl font-bold text-green-200">{trees.length}</p>
                         </div>
                     </div>
 
-                    <div className={`${sectionClass} flex items-center gap-4 p-5`}>
-                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-yellow-300/20 bg-yellow-400/10 text-yellow-300">
-                            <Calendar className="h-6 w-6" />
+                    <div className={`${sectionClass} flex items-center gap-2.5 p-3 sm:gap-3.5 sm:p-4`}>
+                        <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl border border-amber-300/20 bg-amber-400/10 text-amber-200">
+                            <Gift className="h-4 w-4 sm:h-5 sm:w-5" />
                         </div>
-                        <div>
-                            <p className="text-xs text-white/50">Mùa Giáng Sinh</p>
-                            <p className="font-serif text-2xl font-bold text-yellow-300">{currentYear ?? '—'}</p>
+                        <div className="min-w-0">
+                            <p className="text-[11px] sm:text-xs text-white/50 truncate">Quà đã gửi</p>
+                            <p className="font-serif text-lg sm:text-xl md:text-2xl font-bold text-amber-200">{sentGifts.length}</p>
+                        </div>
+                    </div>
+
+                    <div className={`${sectionClass} flex items-center gap-2.5 p-3 sm:gap-3.5 sm:p-4`}>
+                        <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl border border-yellow-300/20 bg-yellow-400/10 text-yellow-300">
+                            <Calendar className="h-4 w-4 sm:h-5 sm:w-5" />
+                        </div>
+                        <div className="min-w-0">
+                            <p className="text-[11px] sm:text-xs text-white/50 truncate">Mùa Giáng Sinh</p>
+                            <p className="font-serif text-lg sm:text-xl md:text-2xl font-bold text-yellow-300">{currentYear ?? '—'}</p>
                         </div>
                     </div>
                 </div>
 
-                {/* TAB SWITCHER */}
-                <div className="mx-auto mb-8 flex max-w-5xl items-center justify-center">
-                    <div className="inline-flex rounded-full border border-amber-200/20 bg-black/40 p-1.5 backdrop-blur-xl">
+                {/* TAB SWITCHER — Compact */}
+                <div className="mx-auto mb-4 flex max-w-5xl items-center justify-center">
+                    <div className="inline-flex rounded-full border border-amber-200/20 bg-black/40 p-1 backdrop-blur-xl">
                         <button
                             type="button"
                             onClick={() => { setActiveTab('trees'); setMessage(null) }}
-                            className={`flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition ${activeTab === 'trees'
+                            className={`flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs sm:text-sm font-semibold transition ${activeTab === 'trees'
                                     ? 'border border-amber-200/40 bg-linear-to-r from-amber-400 to-yellow-300 text-[#35150e] shadow-md'
                                     : 'text-amber-100/70 hover:text-white'
                                 }`}
                         >
-                            <TreePine className="h-4 w-4" />
-                            <span>Cây thông của tôi ({trees.length})</span>
+                            <TreePine className="h-3.5 w-3.5" />
+                            <span>Cây thông ({trees.length})</span>
                         </button>
 
                         <button
                             type="button"
                             onClick={() => { setActiveTab('sent-gifts'); setMessage(null) }}
-                            className={`flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition ${activeTab === 'sent-gifts'
+                            className={`flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs sm:text-sm font-semibold transition ${activeTab === 'sent-gifts'
                                     ? 'border border-amber-200/40 bg-linear-to-r from-amber-400 to-yellow-300 text-[#35150e] shadow-md'
                                     : 'text-amber-100/70 hover:text-white'
                                 }`}
                         >
-                            <Gift className="h-4 w-4" />
-                            <span>Quà & lời chúc đã gửi ({sentGifts.length})</span>
+                            <Gift className="h-3.5 w-3.5" />
+                            <span>Quà đã gửi ({sentGifts.length})</span>
                         </button>
                     </div>
                 </div>
@@ -537,21 +537,21 @@ export default function MyTreesPage() {
                     <>
                         {/* CREATE CURRENT YEAR TREE BANNER */}
                         {canCreateCurrentTree && (
-                            <section className={`${sectionClass} mx-auto mb-8 max-w-5xl overflow-hidden`}>
+                            <section className={`${sectionClass} mx-auto mb-5 max-w-5xl overflow-hidden`}>
                                 <div className="h-1 w-full bg-linear-to-r from-transparent via-green-300 to-transparent" />
-                                <div className="flex flex-col items-center gap-5 p-6 text-center sm:p-8 md:flex-row md:text-left">
-                                    <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-green-300/25 bg-green-400/10 text-green-200 shadow-[0_0_30px_rgba(34,197,94,0.08)]">
-                                        <TreePine className="h-9 w-9" />
+                                <div className="flex flex-col items-center gap-3.5 p-4 text-center sm:p-5 md:flex-row md:text-left">
+                                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-green-300/25 bg-green-400/10 text-green-200 shadow-[0_0_20px_rgba(34,197,94,0.08)]">
+                                        <TreePine className="h-6 w-6" />
                                     </div>
                                     <div className="flex-1">
-                                        <p className="text-xs font-bold uppercase tracking-[0.18em] text-green-200/70">Mùa lễ hội {currentYear}</p>
-                                        <h2 className="mt-1 font-serif text-xl font-bold text-green-200 sm:text-2xl">Tạo cây Giáng Sinh của bạn</h2>
-                                        <p className="mt-2 text-sm leading-relaxed text-red-100/70">
+                                        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-green-200/70">Mùa lễ hội {currentYear}</p>
+                                        <h2 className="mt-0.5 font-serif text-lg font-bold text-green-200 sm:text-xl">Tạo cây Giáng Sinh của bạn</h2>
+                                        <p className="mt-1 text-xs leading-relaxed text-red-100/70">
                                             Bắt đầu một kỷ niệm mới và mời bạn bè gửi những món quà bất ngờ đến cây của bạn.
                                         </p>
                                     </div>
-                                    <button type="button" onClick={() => { setShowCreateForm(true); setMessage(null) }} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full border border-green-300/50 bg-linear-to-r from-green-700 to-green-600 px-6 py-3 text-sm font-bold text-white shadow-lg transition hover:-translate-y-0.5 hover:border-green-200 hover:from-green-600 hover:to-green-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-300">
-                                        <Plus className="h-5 w-5" />
+                                    <button type="button" onClick={() => { setShowCreateForm(true); setMessage(null) }} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full border border-green-300/50 bg-linear-to-r from-green-700 to-green-600 px-5 py-2 text-xs sm:text-sm font-bold text-white shadow-lg transition hover:-translate-y-0.5 hover:border-green-200 hover:from-green-600 hover:to-green-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-300">
+                                        <Plus className="h-4 w-4" />
                                         Tạo cây mới
                                     </button>
                                 </div>
@@ -571,13 +571,13 @@ export default function MyTreesPage() {
                             </div>
 
                             {sortedTrees.length === 0 ? (
-                                <div className={`${sectionClass} px-5 py-14 text-center sm:px-8 sm:py-20`}>
-                                    <div className="relative mx-auto mb-5 flex h-24 w-24 items-center justify-center rounded-full border border-yellow-400/30 bg-yellow-400/10 shadow-[0_0_35px_rgba(234,179,8,0.08)]">
-                                        <TreePine className="h-12 w-12 text-yellow-300/80" />
-                                        <Sparkles className="absolute -right-1 -top-1 h-6 w-6 text-yellow-200/70" />
+                                <div className={`${sectionClass} px-4 py-8 text-center sm:px-6 sm:py-12`}>
+                                    <div className="relative mx-auto mb-3.5 flex h-16 w-16 items-center justify-center rounded-full border border-yellow-400/30 bg-yellow-400/10 shadow-[0_0_25px_rgba(234,179,8,0.08)]">
+                                        <TreePine className="h-8 w-8 text-yellow-300/80" />
+                                        <Sparkles className="absolute -right-1 -top-1 h-4 w-4 text-yellow-200/70" />
                                     </div>
-                                    <h3 className="font-serif text-xl font-bold text-yellow-200 sm:text-2xl">Khu vườn vẫn đang chờ cây đầu tiên</h3>
-                                    <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-red-100/65">
+                                    <h3 className="font-serif text-lg font-bold text-yellow-200 sm:text-xl">Khu vườn vẫn đang chờ cây đầu tiên</h3>
+                                    <p className="mx-auto mt-1.5 max-w-md text-xs leading-relaxed text-red-100/65 sm:text-sm">
                                         {canCreateCurrentTree
                                             ? 'Hãy tạo cây Giáng Sinh đầu tiên để bắt đầu lưu giữ những món quà và lời chúc.'
                                             : currentYear !== null && currentTime !== null && !currentTree
@@ -585,8 +585,8 @@ export default function MyTreesPage() {
                                                 : 'Khi bạn có cây Giáng Sinh, chúng sẽ xuất hiện tại đây để lưu giữ kỷ niệm mỗi mùa lễ hội.'}
                                     </p>
                                     {canCreateCurrentTree && (
-                                        <button type="button" onClick={() => setShowCreateForm(true)} className="mt-7 inline-flex items-center justify-center gap-2 rounded-full border border-green-300/50 bg-linear-to-r from-green-700 to-green-600 px-6 py-3 text-sm font-bold text-white shadow-lg transition hover:scale-[1.03] hover:from-green-600 hover:to-green-500">
-                                            <Plus className="h-5 w-5" />
+                                        <button type="button" onClick={() => setShowCreateForm(true)} className="mt-4 inline-flex items-center justify-center gap-2 rounded-full border border-green-300/50 bg-linear-to-r from-green-700 to-green-600 px-5 py-2 text-xs sm:text-sm font-bold text-white shadow-lg transition hover:scale-[1.03] hover:from-green-600 hover:to-green-500">
+                                            <Plus className="h-4 w-4" />
                                             Tạo cây đầu tiên
                                         </button>
                                     )}
@@ -1089,13 +1089,6 @@ export default function MyTreesPage() {
                         onSubmit={handleUpdateTreeSubmit}
                     />
                 )}
-
-                {/* FOOTER NOTE */}
-                <div className="mx-auto mt-10 flex max-w-2xl items-center justify-center gap-3 text-center">
-                    <Snowflake className="h-4 w-4 shrink-0 text-yellow-200/40" />
-                    <p className="font-serif text-sm italic text-yellow-100/50">“Trao yêu thương, nhận hạnh phúc” ✨</p>
-                    <Snowflake className="h-4 w-4 shrink-0 text-yellow-200/40" />
-                </div>
             </div>
 
             {/* FOOTER */}

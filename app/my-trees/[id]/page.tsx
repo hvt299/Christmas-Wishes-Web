@@ -6,6 +6,7 @@ import Link from 'next/link'
 import {
     AlertCircle,
     ArrowLeft,
+    Camera,
     Check,
     Copy,
     Gift,
@@ -28,6 +29,7 @@ import GiftRevealModal from '@/components/tree-detail/GiftRevealModal'
 import PublicGiftModal from '@/components/tree-detail/PublicGiftModal'
 import SendGiftModal from '@/components/tree-detail/SendGiftModal'
 import EditTreeModal from '@/components/tree-detail/EditTreeModal'
+import TreeImageExportModal from '@/components/tree-detail/TreeImageExportModal'
 import { TREE_DECORATION_CATALOG, TREE_ITEMS_PER_PAGE, getThemeConfig } from '@/constants/tree-decorations'
 import { getGiftColorClass, renderDecorationSvg } from '@/components/tree-detail/TreeDecoration'
 import type {
@@ -122,6 +124,7 @@ export default function TreeDetailPage() {
     // Modals
     const [showSendGift, setShowSendGift] = useState(false)
     const [showEditTree, setShowEditTree] = useState(false)
+    const [showExportModal, setShowExportModal] = useState(false)
     const [selectedGift, setSelectedGift] = useState<TreeGift | null>(null)
     const [revealedGiftContent, setRevealedGiftContent] = useState<TreeGiftContent | null>(null)
     const [revealedWish, setRevealedWish] = useState<TreeWishContent | null>(null)
@@ -426,6 +429,16 @@ export default function TreeDetailPage() {
                             <Share2 className="h-5 w-5" />
                         </button>
 
+                        <button
+                            type="button"
+                            onClick={() => setShowExportModal(true)}
+                            title="Xuất ảnh thiệp cây thông (PNG / JPG)"
+                            aria-label="Xuất ảnh thiệp cây thông"
+                            className="shrink-0 rounded-full p-2 text-yellow-200/80 transition hover:bg-yellow-400/10 hover:text-yellow-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400"
+                        >
+                            <Camera className="h-5 w-5" />
+                        </button>
+
                         {isOwner && (
                             <button
                                 type="button"
@@ -463,21 +476,21 @@ export default function TreeDetailPage() {
                 </nav>
             </header>
 
-            {/* MAIN CONTENT AREA */}
-            <div className="relative z-10 mx-auto w-full max-w-5xl grow px-4 pb-16 pt-28 sm:px-6 md:pt-32">
+            {/* MAIN CONTENT AREA — Scaled & Compact UI matching game pages */}
+            <div className="relative z-10 mx-auto w-full max-w-5xl grow px-4 pb-12 pt-16 sm:px-6 sm:pt-20">
                 {/* HERO TITLE SECTION - Gọn gàng, tinh tế */}
-                <div className="mb-8 text-center">
-                    <div className="mb-3 flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-yellow-200 sm:text-sm">
-                        <Sparkles className="h-4 w-4" />
+                <div className="mb-4 text-center">
+                    <div className="mb-1 flex items-center justify-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-yellow-200 sm:text-xs">
+                        <Sparkles className="h-3.5 w-3.5" />
                         <span>Mùa yêu thương</span>
-                        <Sparkles className="h-4 w-4" />
+                        <Sparkles className="h-3.5 w-3.5" />
                     </div>
 
-                    <h1 className="wrap-break-word font-serif text-3xl font-black text-yellow-300 drop-shadow-md sm:text-4xl md:text-5xl">
+                    <h1 className="wrap-break-word font-serif text-2xl font-black text-yellow-300 drop-shadow-md sm:text-3xl md:text-4xl">
                         {tree.name}
                     </h1>
 
-                    <div className="mt-3 flex flex-wrap items-center justify-center gap-2 text-xs sm:text-sm text-red-100/80">
+                    <div className="mt-1 flex flex-wrap items-center justify-center gap-2 text-xs sm:text-sm text-red-100/75">
                         <span>Mùa Giáng Sinh {tree.year}</span>
                         <span>·</span>
                         <span className="font-semibold text-yellow-200">{themeConfig.badge}</span>
@@ -487,11 +500,11 @@ export default function TreeDetailPage() {
                                 <img
                                     src={tree.owner.avatar}
                                     alt={ownerName}
-                                    className="h-5 w-5 rounded-full object-cover"
+                                    className="h-4 w-4 rounded-full object-cover"
                                     referrerPolicy="no-referrer"
                                 />
                             ) : (
-                                <UserRound className="h-4 w-4 text-yellow-300" />
+                                <UserRound className="h-3.5 w-3.5 text-yellow-300" />
                             )}
                             <span>{ownerName}</span>
                         </span>
@@ -502,7 +515,7 @@ export default function TreeDetailPage() {
                         )}
                     </div>
 
-                    <div className="mx-auto mt-4 h-px w-32 bg-linear-to-r from-transparent via-yellow-400/70 to-transparent" />
+                    <div className="mx-auto mt-2.5 h-px w-28 bg-linear-to-r from-transparent via-yellow-400/70 to-transparent" />
                 </div>
 
                 {/* STATUS NOTICE TOAST */}
@@ -642,6 +655,14 @@ export default function TreeDetailPage() {
                                 <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
                                     <button
                                         type="button"
+                                        onClick={() => setShowExportModal(true)}
+                                        className="inline-flex items-center justify-center gap-2 rounded-full border border-yellow-400/50 bg-yellow-400/15 px-4 py-2 text-sm font-bold text-yellow-200 transition hover:bg-yellow-400/25"
+                                    >
+                                        <Camera className="h-4 w-4" />
+                                        <span>Xuất ảnh cây thông</span>
+                                    </button>
+                                    <button
+                                        type="button"
                                         onClick={() => void handleShare()}
                                         className={buttonClass}
                                     >
@@ -659,7 +680,19 @@ export default function TreeDetailPage() {
                                 </div>
                             </div>
                         ) : (
-                            <p className="text-xs text-white/50">Cây hiện không nhận thêm quà.</p>
+                            <div>
+                                <p className="text-xs text-white/50">Cây hiện không nhận thêm quà.</p>
+                                <div className="mt-2 flex justify-center">
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowExportModal(true)}
+                                        className="inline-flex items-center gap-1.5 text-xs text-yellow-200/80 hover:text-yellow-200 underline underline-offset-4 transition"
+                                    >
+                                        <Camera className="h-3.5 w-3.5" />
+                                        <span>Tải ảnh thiệp cây thông</span>
+                                    </button>
+                                </div>
+                            </div>
                         )}
                     </div>
                 </section>
@@ -848,6 +881,24 @@ export default function TreeDetailPage() {
                     </div>
                 </div>
             )}
+
+            {/* 5. Modal Xuất Ảnh Thiệp Cây Thông (TreeImageExportModal) */}
+            {tree && (
+                <TreeImageExportModal
+                    isOpen={showExportModal}
+                    tree={tree}
+                    visibleGifts={visibleGifts}
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onClose={() => setShowExportModal(false)}
+                />
+            )}
+
+            {/* FOOTER */}
+            <footer className="relative z-10 mt-8 border-t border-yellow-400/10 bg-black/20 px-4 py-5 text-center text-xs text-white/50 backdrop-blur-sm md:text-sm">
+                <p>© {tree.year ?? new Date().getFullYear()} Christmas Wishes</p>
+                <p className="mt-1 text-yellow-100/40">Made with ❤️ for a magical Christmas</p>
+            </footer>
         </main>
     )
 }

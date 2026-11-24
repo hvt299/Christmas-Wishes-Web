@@ -159,10 +159,10 @@ export default function ProfilePage() {
         }
     }
 
-    const inputClass = 'w-full rounded-xl border border-yellow-400/15 bg-black/25 py-3 pl-11 pr-4 font-sans text-sm text-white outline-none transition duration-300 placeholder:text-white/40 focus:border-yellow-300/60 focus:ring-2 focus:ring-yellow-400/10'
-    const labelClass = 'mb-2 block font-sans text-sm font-medium text-yellow-50/90'
-    const iconClass = 'absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-yellow-200/60'
-    const sectionClass = 'overflow-hidden rounded-3xl border border-yellow-400/20 bg-black/30 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-xl'
+    const inputClass = 'w-full rounded-xl border border-yellow-400/15 bg-black/25 py-2.5 pl-10 pr-4 font-sans text-xs sm:text-sm text-white outline-none transition duration-300 placeholder:text-white/40 focus:border-yellow-300/60 focus:ring-2 focus:ring-yellow-400/10'
+    const labelClass = 'mb-1.5 block font-sans text-xs sm:text-sm font-medium text-yellow-50/90'
+    const iconClass = 'absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-yellow-200/60'
+    const sectionClass = 'overflow-hidden rounded-2xl sm:rounded-3xl border border-yellow-400/20 bg-black/30 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-xl'
     const passwordButtonClass = 'absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-white/50 transition hover:text-yellow-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400'
 
     if (profileLoading) {
@@ -216,105 +216,104 @@ export default function ProfilePage() {
             </header>
 
             {/* MAIN CONTENT */}
-            <div className="relative z-10 mx-auto w-full max-w-7xl px-4 pb-12 pt-28 sm:px-6 md:pt-32">
+            <div className="relative z-10 mx-auto w-full max-w-7xl px-3 sm:px-6 pb-10 pt-16 sm:pt-20">
                 {/* PAGE HEADING */}
-                <div className="mb-8 text-center">
-                    <div className="mb-3 flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-yellow-200 sm:text-sm">
-                        <Sparkles className="h-4 w-4" />
+                <div className="mb-5 text-center">
+                    <div className="mb-1.5 flex items-center justify-center gap-1.5 text-xs font-bold uppercase tracking-[0.2em] text-yellow-200">
+                        <Sparkles className="h-3.5 w-3.5" />
                         <span>Mùa yêu thương</span>
-                        <Sparkles className="h-4 w-4" />
+                        <Sparkles className="h-3.5 w-3.5" />
                     </div>
-                    <h1 className="font-serif text-3xl font-black text-yellow-300 drop-shadow-md sm:text-4xl md:text-5xl">Hồ Sơ Của Tôi</h1>
-                    <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-red-100/80 sm:text-base">Quản lý thông tin cá nhân và bảo vệ tài khoản của bạn trong mùa lễ hội yêu thương.</p>
+                    <h1 className="font-serif text-2xl font-black text-yellow-300 drop-shadow-md sm:text-3xl md:text-4xl">Hồ Sơ Của Tôi</h1>
+                    <p className="mx-auto mt-1 max-w-xl text-xs sm:text-sm leading-relaxed text-red-100/80">Quản lý thông tin cá nhân và bảo vệ tài khoản của bạn trong mùa lễ hội yêu thương.</p>
                 </div>
 
                 {/* MESSAGE */}
                 {message && (
-                    <div role="status" aria-live="polite" className={`mx-auto mb-6 flex max-w-5xl items-start gap-3 rounded-xl border p-4 text-sm shadow-lg backdrop-blur-xl ${message.type === 'success' ? 'border-green-300/25 bg-green-950/60 text-green-100' : 'border-red-300/25 bg-red-950/70 text-red-100'}`}>
-                        {message.type === 'success' ? <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-green-300" /> : <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-red-300" />}
+                    <div role="status" aria-live="polite" className={`mx-auto mb-5 flex max-w-5xl items-start gap-3 rounded-xl border p-3.5 text-xs sm:text-sm shadow-lg backdrop-blur-xl ${message.type === 'success' ? 'border-green-300/25 bg-green-950/60 text-green-100' : 'border-red-300/25 bg-red-950/70 text-red-100'}`}>
+                        {message.type === 'success' ? <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-green-300" /> : <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-300" />}
                         <span className="flex-1 leading-relaxed">{message.text}</span>
                         <button type="button" onClick={() => setMessage(null)} aria-label="Đóng thông báo" className="rounded-lg p-1 transition hover:bg-white/10">×</button>
                     </div>
                 )}
 
-                <div className="mx-auto grid max-w-5xl grid-cols-1 items-start gap-6 lg:grid-cols-12">
+                <div className="mx-auto grid max-w-5xl grid-cols-1 items-start gap-4 sm:gap-6 lg:grid-cols-12">
                     {/* PROFILE CARD */}
                     <aside className="lg:col-span-4">
-                        <section className={`${sectionClass} relative p-6 text-center sm:p-8`}>
+                        <section className={`${sectionClass} relative p-4 sm:p-5 text-center`}>
                             <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-red-900/35 via-transparent to-green-950/30" />
                             <div className="absolute left-0 top-0 h-1 w-full bg-linear-to-r from-transparent via-yellow-400 to-transparent" />
-                            <Snowflake className="pointer-events-none absolute right-5 top-5 h-7 w-7 text-yellow-100/20" />
-                            <Sparkles className="pointer-events-none absolute bottom-6 left-5 h-5 w-5 text-yellow-300/30" />
+                            <Snowflake className="pointer-events-none absolute right-4 top-4 h-6 w-6 text-yellow-100/20" />
+                            <Sparkles className="pointer-events-none absolute bottom-4 left-4 h-4 w-4 text-yellow-300/30" />
 
-                            <div className="relative mx-auto mb-5 flex h-28 w-28 items-center justify-center rounded-full border-2 border-yellow-400/70 bg-linear-to-br from-red-800 to-red-950 p-1 shadow-[0_0_35px_rgba(234,179,8,0.15)] sm:h-32 sm:w-32">
+                            <div className="relative mx-auto mb-3 flex h-20 w-20 items-center justify-center rounded-full border-2 border-yellow-400/70 bg-linear-to-br from-red-800 to-red-950 p-1 shadow-[0_0_25px_rgba(234,179,8,0.15)] sm:h-24 sm:w-24">
                                 <div className="flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-red-950">
                                     {avatarUrl.trim() ? (
                                         <img src={avatarUrl.trim()} alt="Ảnh đại diện" referrerPolicy="no-referrer" className="h-full w-full object-cover" onError={(e) => { e.currentTarget.style.display = 'none' }} />
                                     ) : (
-                                        <User className="h-14 w-14 text-yellow-200/70 sm:h-16 sm:w-16" />
+                                        <User className="h-10 w-10 text-yellow-200/70 sm:h-12 sm:w-12" />
                                     )}
                                 </div>
-                                <div className="absolute bottom-0 right-0 flex h-9 w-9 items-center justify-center rounded-full border-2 border-red-950 bg-yellow-400 text-red-950 shadow-lg">
-                                    <Camera className="h-4 w-4" />
+                                <div className="absolute bottom-0 right-0 flex h-7 w-7 items-center justify-center rounded-full border-2 border-red-950 bg-yellow-400 text-red-950 shadow-lg">
+                                    <Camera className="h-3.5 w-3.5" />
                                 </div>
                             </div>
 
                             <div className="relative">
+                                <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.2em] text-yellow-100/60">Thành viên Giáng Sinh</p>
+                                <h2 className="wrap-break-word font-serif text-lg font-bold text-yellow-200 sm:text-xl">{fullName || 'Chưa đặt tên'}</h2>
+                                {userInfo?.email && <p className="mt-1 break-all text-xs text-red-100/70">{userInfo.email}</p>}
+                                {username && <p className="mt-1 break-all text-xs text-red-100/60">@{username}</p>}
 
-                                <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-yellow-100/60">Thành viên Giáng Sinh</p>
-                                <h2 className="wrap-break-word font-serif text-2xl font-bold text-yellow-200 sm:text-3xl">{fullName || 'Chưa đặt tên'}</h2>
-                                {userInfo?.email && <p className="mt-2 break-all text-sm text-red-100/70">{userInfo.email}</p>}
-                                {username && <p className="mt-2 break-all text-sm text-red-100/60">@{username}</p>}
-
-                                <div className="mt-4 flex flex-wrap justify-center gap-2">
-                                    <span className="rounded-full border border-yellow-300/20 bg-yellow-400/10 px-3 py-1 text-xs font-medium text-yellow-200">
+                                <div className="mt-3 flex flex-wrap justify-center gap-1.5">
+                                    <span className="rounded-full border border-yellow-300/20 bg-yellow-400/10 px-2.5 py-0.5 text-[11px] font-medium text-yellow-200">
                                         {userInfo?.role || 'USER'}
                                     </span>
                                 </div>
 
-                                <div className="mx-auto my-6 h-px w-4/5 bg-linear-to-r from-transparent via-yellow-400/35 to-transparent" />
+                                <div className="mx-auto my-4 h-px w-4/5 bg-linear-to-r from-transparent via-yellow-400/35 to-transparent" />
 
-                                <div className="space-y-3 text-left">
-                                    <div className="flex items-center gap-3 rounded-xl border border-yellow-400/10 bg-black/20 p-3">
-                                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-yellow-400/10 text-yellow-300">
-                                            <User className="h-5 w-5" />
+                                <div className="space-y-2 text-left">
+                                    <div className="flex items-center gap-2.5 rounded-xl border border-yellow-400/10 bg-black/20 p-2.5">
+                                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-yellow-400/10 text-yellow-300">
+                                            <User className="h-4 w-4" />
                                         </div>
                                         <div className="min-w-0">
-                                            <p className="text-xs text-white/45">Tên hiển thị</p>
-                                            <p className="truncate text-sm font-medium text-white/90">{fullName || 'Chưa cập nhật'}</p>
+                                            <p className="text-[10px] text-white/45">Tên hiển thị</p>
+                                            <p className="truncate text-xs sm:text-sm font-medium text-white/90">{fullName || 'Chưa cập nhật'}</p>
                                         </div>
                                     </div>
-                                    <div className="flex items-center gap-3 rounded-xl border border-yellow-400/10 bg-black/20 p-3">
-                                        <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-green-400/10 ${userInfo?.isActive ? 'text-green-200' : 'text-red-300'}`}>
-                                            <ShieldCheck className="h-5 w-5" />
+                                    <div className="flex items-center gap-2.5 rounded-xl border border-yellow-400/10 bg-black/20 p-2.5">
+                                        <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-green-400/10 ${userInfo?.isActive ? 'text-green-200' : 'text-red-300'}`}>
+                                            <ShieldCheck className="h-4 w-4" />
                                         </div>
                                         <div className="min-w-0">
-                                            <p className="text-xs text-white/45">Trạng thái tài khoản</p>
-                                            <p className={`text-sm font-medium ${userInfo?.isActive ? 'text-green-200' : 'text-red-300'}`}>
+                                            <p className="text-[10px] text-white/45">Trạng thái tài khoản</p>
+                                            <p className={`text-xs sm:text-sm font-medium ${userInfo?.isActive ? 'text-green-200' : 'text-red-300'}`}>
                                                 {userInfo?.isActive ? 'Đang hoạt động' : 'Đã bị khóa'}
                                             </p>
                                         </div>
                                     </div>
 
-                                    <div className="flex items-center gap-3 rounded-xl border border-yellow-400/10 bg-black/20 p-3">
-                                        <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-green-400/10 ${userInfo?.isActive ? 'text-green-200' : 'text-red-300'}`}>
-                                            <ShieldCheck className="h-5 w-5" />
+                                    <div className="flex items-center gap-2.5 rounded-xl border border-yellow-400/10 bg-black/20 p-2.5">
+                                        <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-green-400/10 ${userInfo?.isVerified ? 'text-green-200' : 'text-red-300'}`}>
+                                            <ShieldCheck className="h-4 w-4" />
                                         </div>
                                         <div className="min-w-0">
-                                            <p className="text-xs text-white/45">Email xác minh</p>
-                                            <p className={`text-sm font-medium ${userInfo?.isActive ? 'text-green-200' : 'text-red-300'}`}>
+                                            <p className="text-[10px] text-white/45">Email xác minh</p>
+                                            <p className={`text-xs sm:text-sm font-medium ${userInfo?.isVerified ? 'text-green-200' : 'text-red-300'}`}>
                                                 {userInfo?.isVerified ? 'Đã xác minh' : 'Chưa xác minh'}
                                             </p>
                                         </div>
                                     </div>
 
-                                    <div className="flex items-center gap-3 rounded-xl border border-yellow-400/10 bg-black/20 p-3">
-                                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-yellow-400/10 text-yellow-200">
-                                            <Settings className="h-5 w-5" />
+                                    <div className="flex items-center gap-2.5 rounded-xl border border-yellow-400/10 bg-black/20 p-2.5">
+                                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-yellow-400/10 text-yellow-200">
+                                            <Settings className="h-4 w-4" />
                                         </div>
                                         <div className="min-w-0">
-                                            <p className="text-xs text-white/45">Ngày tham gia</p>
-                                            <p className="text-sm font-medium text-white/90">
+                                            <p className="text-[10px] text-white/45">Ngày tham gia</p>
+                                            <p className="text-xs sm:text-sm font-medium text-white/90">
                                                 {userInfo?.createdAt && !Number.isNaN(new Date(userInfo.createdAt).getTime())
                                                     ? new Date(userInfo.createdAt).toLocaleDateString('vi-VN')
                                                     : 'Chưa có thông tin'}
@@ -322,77 +321,75 @@ export default function ProfilePage() {
                                         </div>
                                     </div>
                                 </div>
-
-                                <p className="mt-6 font-serif text-sm italic leading-relaxed text-yellow-100/60">“Trao yêu thương, nhận hạnh phúc” ✨</p>
                             </div>
                         </section>
 
                         {/* SNOWFLAKES */}
-                        <div className="mt-4 rounded-2xl border border-blue-300/20 bg-black/25 p-5 shadow-lg backdrop-blur-xl">
+                        <div className="mt-3 sm:mt-4 rounded-2xl border border-blue-300/20 bg-black/25 p-3.5 sm:p-4 shadow-lg backdrop-blur-xl">
                             <div className="flex items-center gap-3">
-                                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-blue-300/20 bg-blue-400/10 text-blue-300">
-                                    <Snowflake className="h-7 w-7" />
+                                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-blue-300/20 bg-blue-400/10 text-blue-300">
+                                    <Snowflake className="h-6 w-6" />
                                 </div>
                                 <div className="min-w-0">
-                                    <p className="text-xs font-medium text-white/50">Số dư bông tuyết</p>
-                                    <p className="font-serif text-2xl font-bold text-blue-300">
+                                    <p className="text-[11px] font-medium text-white/50">Số dư bông tuyết</p>
+                                    <p className="font-serif text-lg sm:text-xl font-bold text-blue-300">
                                         {(userInfo?.snowflakes ?? 0).toLocaleString('vi-VN')} bông tuyết
                                     </p>
                                 </div>
                             </div>
-                            <p className="mt-3 text-xs leading-relaxed text-blue-100/60">
+                            <p className="mt-2 text-[11px] leading-relaxed text-blue-100/60">
                                 ❄️ Bông tuyết là điểm tích lũy của bạn trong mùa Giáng Sinh.
                             </p>
                         </div>
 
                         {/* COINS */}
-                        <div className="mt-4 rounded-2xl border border-yellow-400/20 bg-black/25 p-5 shadow-lg backdrop-blur-xl">
+                        <div className="mt-3 sm:mt-4 rounded-2xl border border-yellow-400/20 bg-black/25 p-3.5 sm:p-4 shadow-lg backdrop-blur-xl">
                             <div className="flex items-center gap-3">
-                                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-yellow-300/20 bg-yellow-400/10 text-2xl">
+                                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-yellow-300/20 bg-yellow-400/10 text-xl">
                                     🪙
                                 </div>
                                 <div className="min-w-0">
-                                    <p className="text-xs font-medium text-white/50">Số dư xu</p>
-                                    <p className="font-serif text-2xl font-bold text-yellow-300">
+                                    <p className="text-[11px] font-medium text-white/50">Số dư xu</p>
+                                    <p className="font-serif text-lg sm:text-xl font-bold text-yellow-300">
                                         {(userInfo?.coins ?? 0).toLocaleString('vi-VN')} xu
                                     </p>
                                 </div>
                             </div>
-                            <p className="mt-3 text-xs leading-relaxed text-yellow-100/60">
+                            <p className="mt-2 text-[11px] leading-relaxed text-yellow-100/60">
                                 🪙 Xu chỉ sử dụng cho Tết Countdown, không áp dụng cho website Christmas Wishes.
                             </p>
                         </div>
 
-                        <div className="mt-4 rounded-2xl border border-yellow-400/15 bg-black/25 p-5 shadow-lg backdrop-blur-xl">
+                        <div className="mt-3 sm:mt-4 rounded-2xl border border-yellow-400/15 bg-black/25 p-3.5 sm:p-4 shadow-lg backdrop-blur-xl">
                             <div className="flex items-center gap-3">
-                                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-yellow-300/20 bg-yellow-300/10 text-yellow-300">
-                                    <Gift className="h-6 w-6" />
+                                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-yellow-300/20 bg-yellow-300/10 text-yellow-300">
+                                    <Gift className="h-5 w-5" />
                                 </div>
                                 <div>
-                                    <h3 className="font-serif font-bold text-yellow-200">Góc nhỏ yêu thương</h3>
-                                    <p className="mt-1 text-xs leading-relaxed text-red-100/65">Lưu giữ những khoảnh khắc đáng nhớ của mùa lễ hội.</p>
+                                    <h3 className="font-serif text-xs sm:text-sm font-bold text-yellow-200">Góc nhỏ yêu thương</h3>
+                                    <p className="mt-0.5 text-[11px] leading-relaxed text-red-100/65">Lưu giữ những khoảnh khắc đáng nhớ của mùa lễ hội.</p>
                                 </div>
                             </div>
                         </div>
                     </aside>
 
                     {/* SETTINGS */}
-                    <div className="space-y-6 lg:col-span-8">
+                    <div className="space-y-4 sm:space-y-6 lg:col-span-8">
                         {/* PERSONAL INFORMATION */}
                         <section className={sectionClass}>
                             <div className="h-1 w-full bg-linear-to-r from-transparent via-yellow-400/70 to-transparent" />
-                            <div className="p-5 sm:p-7">
-                                <div className="mb-6 flex items-start gap-4">
-                                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-yellow-400/20 bg-yellow-400/10 text-yellow-300">
-                                        <Settings className="h-6 w-6" />
+                            <div className="p-4 sm:p-6">
+                                <div className="mb-4 sm:mb-5 flex items-start gap-3 sm:gap-4">
+                                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-yellow-400/20 bg-yellow-400/10 text-yellow-300">
+                                        <Settings className="h-5 w-5" />
                                     </div>
                                     <div>
-                                        <h2 className="font-serif text-xl font-bold text-yellow-200 sm:text-2xl">Thông Tin Cá Nhân</h2>
-                                        <p className="mt-1 text-sm leading-relaxed text-red-100/60">Cập nhật thông tin và ảnh đại diện của bạn.</p>
+                                        <h2 className="font-serif text-lg font-bold text-yellow-200 sm:text-xl">Thông Tin Cá Nhân</h2>
+                                        <p className="mt-0.5 text-xs sm:text-sm leading-relaxed text-red-100/60">Cập nhật thông tin và ảnh đại diện của bạn.</p>
                                     </div>
                                 </div>
 
-                                <form onSubmit={handleUpdateProfile} className="space-y-5">
+                                <form onSubmit={handleUpdateProfile} className="space-y-3.5 sm:space-y-4">
                                     <div>
                                         <label htmlFor="fullName" className={labelClass}>Tên hiển thị</label>
                                         <div className="relative">
@@ -407,24 +404,24 @@ export default function ProfilePage() {
                                             <Camera className={iconClass} />
                                             <input id="avatarUrl" type="url" className={inputClass} placeholder="https://example.com/avatar.jpg" value={avatarUrl} onChange={(e) => setAvatarUrl(e.target.value)} />
                                         </div>
-                                        <p className="mt-2 text-xs leading-relaxed text-red-100/45">Dán đường dẫn ảnh công khai để cập nhật avatar.</p>
+                                        <p className="mt-1 text-[11px] leading-relaxed text-red-100/45">Dán đường dẫn ảnh công khai để cập nhật avatar.</p>
                                     </div>
 
                                     {avatarUrl.trim() && (
-                                        <div className="flex items-center gap-3 rounded-xl border border-yellow-400/10 bg-black/20 p-3">
-                                            <div className="h-12 w-12 shrink-0 overflow-hidden rounded-full border border-yellow-300/30 bg-red-950">
+                                        <div className="flex items-center gap-3 rounded-xl border border-yellow-400/10 bg-black/20 p-2.5">
+                                            <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full border border-yellow-300/30 bg-red-950">
                                                 <img src={avatarUrl.trim()} alt="Xem trước ảnh đại diện" referrerPolicy="no-referrer" className="h-full w-full object-cover" />
                                             </div>
                                             <div className="min-w-0">
-                                                <p className="text-sm font-medium text-yellow-100/90">Xem trước ảnh đại diện</p>
-                                                <p className="truncate text-xs text-white/40">{avatarUrl}</p>
+                                                <p className="text-xs sm:text-sm font-medium text-yellow-100/90">Xem trước ảnh đại diện</p>
+                                                <p className="truncate text-[11px] text-white/40">{avatarUrl}</p>
                                             </div>
                                         </div>
                                     )}
 
-                                    <div className="flex flex-col gap-3 border-t border-yellow-400/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
-                                        <p className="text-xs leading-relaxed text-white/40">Thông tin sẽ được lưu vào hồ sơ của bạn.</p>
-                                        <button type="submit" disabled={loading} className="inline-flex items-center justify-center gap-2 rounded-full border border-yellow-300/70 bg-linear-to-r from-yellow-500 to-yellow-300 px-6 py-3 text-sm font-bold text-red-950 shadow-lg transition duration-300 hover:scale-[1.02] hover:from-yellow-300 hover:to-yellow-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-200 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100">
+                                    <div className="flex flex-col gap-3 border-t border-yellow-400/10 pt-4 sm:flex-row sm:items-center sm:justify-between">
+                                        <p className="text-[11px] leading-relaxed text-white/40">Thông tin sẽ được lưu vào hồ sơ của bạn.</p>
+                                        <button type="submit" disabled={loading} className="inline-flex items-center justify-center gap-2 rounded-full border border-yellow-300/70 bg-linear-to-r from-yellow-500 to-yellow-300 px-5 py-2.5 text-xs sm:text-sm font-bold text-red-950 shadow-lg transition duration-300 hover:scale-[1.02] hover:from-yellow-300 hover:to-yellow-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-200 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100">
                                             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
                                             {loading ? 'Đang lưu...' : 'Lưu thay đổi'}
                                         </button>
@@ -436,34 +433,34 @@ export default function ProfilePage() {
                         {/* PASSWORD */}
                         <section className={sectionClass}>
                             <div className="h-1 w-full bg-linear-to-r from-transparent via-green-500/70 to-transparent" />
-                            <div className="p-5 sm:p-7">
-                                <div className="mb-6 flex items-start gap-4">
-                                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-green-400/20 bg-green-400/10 text-green-200">
-                                        <ShieldCheck className="h-6 w-6" />
+                            <div className="p-4 sm:p-6">
+                                <div className="mb-4 sm:mb-5 flex items-start gap-3 sm:gap-4">
+                                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-green-400/20 bg-green-400/10 text-green-200">
+                                        <ShieldCheck className="h-5 w-5" />
                                     </div>
                                     <div>
-                                        <h2 className="font-serif text-xl font-bold text-yellow-200 sm:text-2xl">Bảo Mật Tài Khoản</h2>
-                                        <p className="mt-1 text-sm leading-relaxed text-red-100/60">Đổi mật khẩu để giữ tài khoản luôn an toàn.</p>
+                                        <h2 className="font-serif text-lg font-bold text-yellow-200 sm:text-xl">Bảo Mật Tài Khoản</h2>
+                                        <p className="mt-0.5 text-xs sm:text-sm leading-relaxed text-red-100/60">Đổi mật khẩu để giữ tài khoản luôn an toàn.</p>
                                     </div>
                                 </div>
 
-                                <form onSubmit={handleChangePassword} className="space-y-5">
+                                <form onSubmit={handleChangePassword} className="space-y-3.5 sm:space-y-4">
                                     <div>
                                         <label htmlFor="currentPassword" className={labelClass}>Mật khẩu hiện tại</label>
                                         <div className="relative">
                                             <KeyRound className={iconClass} />
                                             <input id="currentPassword" type={showCurrentPassword ? 'text' : 'password'} autoComplete="current-password" required className={`${inputClass} pr-12`} placeholder="Nhập mật khẩu hiện tại" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
-                                            <button type="button" onClick={() => setShowCurrentPassword(!showCurrentPassword)} aria-label={showCurrentPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'} className={passwordButtonClass}>{showCurrentPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}</button>
+                                            <button type="button" onClick={() => setShowCurrentPassword(!showCurrentPassword)} aria-label={showCurrentPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'} className={passwordButtonClass}>{showCurrentPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}</button>
                                         </div>
                                     </div>
 
-                                    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                                    <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
                                         <div>
                                             <label htmlFor="newPassword" className={labelClass}>Mật khẩu mới</label>
                                             <div className="relative">
                                                 <Lock className={iconClass} />
                                                 <input id="newPassword" type={showNewPassword ? 'text' : 'password'} autoComplete="new-password" required className={`${inputClass} pr-12`} placeholder="Tạo mật khẩu mới" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
-                                                <button type="button" onClick={() => setShowNewPassword(!showNewPassword)} aria-label={showNewPassword ? 'Ẩn mật khẩu mới' : 'Hiện mật khẩu mới'} className={passwordButtonClass}>{showNewPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}</button>
+                                                <button type="button" onClick={() => setShowNewPassword(!showNewPassword)} aria-label={showNewPassword ? 'Ẩn mật khẩu mới' : 'Hiện mật khẩu mới'} className={passwordButtonClass}>{showNewPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}</button>
                                             </div>
                                         </div>
 
@@ -472,23 +469,23 @@ export default function ProfilePage() {
                                             <div className="relative">
                                                 <Lock className={iconClass} />
                                                 <input id="confirmPassword" type={showConfirmPassword ? 'text' : 'password'} autoComplete="new-password" required className={`${inputClass} pr-12`} placeholder="Nhập lại mật khẩu mới" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
-                                                <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} aria-label={showConfirmPassword ? 'Ẩn mật khẩu xác nhận' : 'Hiện mật khẩu xác nhận'} className={passwordButtonClass}>{showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}</button>
+                                                <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} aria-label={showConfirmPassword ? 'Ẩn mật khẩu xác nhận' : 'Hiện mật khẩu xác nhận'} className={passwordButtonClass}>{showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}</button>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div className="rounded-xl border border-green-400/15 bg-green-950/30 p-4">
-                                        <p className="mb-2 flex items-center gap-2 text-sm font-semibold text-green-200"><ShieldCheck className="h-4 w-4" />Yêu cầu mật khẩu</p>
-                                        <ul className="space-y-1.5 text-xs leading-relaxed text-red-100/65">
+                                    <div className="rounded-xl border border-green-400/15 bg-green-950/30 p-3">
+                                        <p className="mb-1.5 flex items-center gap-1.5 text-xs font-semibold text-green-200"><ShieldCheck className="h-3.5 w-3.5" />Yêu cầu mật khẩu</p>
+                                        <ul className="space-y-1 text-[11px] leading-relaxed text-red-100/65">
                                             <li>• Tối thiểu 8 ký tự.</li>
                                             <li>• Có ít nhất một chữ hoa và một chữ thường.</li>
                                             <li>• Có ít nhất một chữ số và một ký tự đặc biệt.</li>
                                         </ul>
                                     </div>
 
-                                    <div className="flex flex-col gap-3 border-t border-yellow-400/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
-                                        <p className="text-xs leading-relaxed text-white/40">Không chia sẻ mật khẩu với bất kỳ ai.</p>
-                                        <button type="submit" disabled={loading || !currentPassword || !newPassword || !confirmPassword} className="inline-flex items-center justify-center gap-2 rounded-full border border-yellow-300/50 bg-linear-to-r from-red-800 to-red-950 px-6 py-3 text-sm font-bold text-yellow-100 shadow-lg transition duration-300 hover:scale-[1.02] hover:border-yellow-300/80 hover:from-red-700 hover:to-red-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-300 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100">
+                                    <div className="flex flex-col gap-3 border-t border-yellow-400/10 pt-4 sm:flex-row sm:items-center sm:justify-between">
+                                        <p className="text-[11px] leading-relaxed text-white/40">Không chia sẻ mật khẩu với bất kỳ ai.</p>
+                                        <button type="submit" disabled={loading || !currentPassword || !newPassword || !confirmPassword} className="inline-flex items-center justify-center gap-2 rounded-full border border-yellow-300/50 bg-linear-to-r from-red-800 to-red-950 px-5 py-2.5 text-xs sm:text-sm font-bold text-yellow-100 shadow-lg transition duration-300 hover:scale-[1.02] hover:border-yellow-300/80 hover:from-red-700 hover:to-red-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-300 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100">
                                             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Lock className="h-4 w-4" />}
                                             {loading ? 'Đang xử lý...' : 'Đổi mật khẩu'}
                                         </button>
