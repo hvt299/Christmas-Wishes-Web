@@ -27,6 +27,7 @@ import { getVietnamDateParts, canCreateTree } from '@/utils/christmasHelper'
 import { getValidAuthToken, clearAuthData } from '@/utils/auth'
 import EditTreeModal from '@/components/tree-detail/EditTreeModal'
 import { getGiftColorClass, renderDecorationSvg } from '@/components/tree-detail/TreeDecoration'
+import { SnowflakeBalance } from '@/components/games/SnowflakeBalance'
 import type { TreeDecorationType, TreeTheme } from '@/types/tree-detail.types'
 
 type TreeItem = {
@@ -419,21 +420,23 @@ export default function MyTreesPage() {
             </div>
 
             {/* HEADER */}
-            <header className="fixed left-0 top-0 z-50 w-full border-b border-yellow-400/20 bg-red-950/40 px-4 py-3 shadow-lg backdrop-blur-xl md:px-8">
-                <nav className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3">
-                    <Link href="/" className="group flex min-w-0 shrink-0 items-center gap-2 font-serif text-xl font-bold text-yellow-400 transition hover:scale-105 hover:text-yellow-200 md:text-2xl">
-                        <Snowflake className="h-7 w-7 shrink-0 animate-spin md:h-8 md:w-8" />
+            <header className="fixed left-0 top-0 z-50 w-full border-b border-yellow-400/20 bg-red-950/40 px-3 py-2 shadow-lg backdrop-blur-xl transition-all sm:px-4 sm:py-2.5 md:px-8 md:py-3">
+                <nav className="mx-auto flex w-full max-w-7xl items-center justify-between gap-2 sm:gap-3">
+                    <Link href="/" className="group flex min-w-0 shrink-0 items-center gap-1.5 font-serif text-lg font-bold text-yellow-400 drop-shadow-md transition hover:scale-105 hover:text-yellow-200 sm:gap-2 sm:text-xl md:text-2xl">
+                        <Snowflake className="h-6 w-6 shrink-0 animate-spin text-yellow-300 md:h-7 md:w-7" style={{ animationDuration: '10s' }} />
                         <span className="hidden sm:inline">Christmas Wishes</span>
                     </Link>
 
-                    <div className="flex min-w-0 items-center gap-1 rounded-full border border-yellow-400/30 bg-black/40 py-1 pl-1 pr-2 shadow-lg backdrop-blur-md md:gap-2">
-                        <Link href="/" title="Quay lại trang chủ" className="group flex min-w-0 items-center gap-2 rounded-full px-2 py-2 text-sm text-white/80 transition hover:bg-red-900/50 hover:text-yellow-200 md:gap-3 md:px-3">
-                            <ArrowLeft className="h-4 w-4 shrink-0 transition-transform group-hover:-translate-x-1" />
-                            <span className="hidden sm:inline">Trang chủ</span>
+                    <div className="flex items-center gap-1 rounded-full border border-yellow-400/30 bg-black/40 py-0.5 pl-1 pr-1.5 shadow-xl backdrop-blur-md sm:gap-2 sm:py-1 sm:pl-1.5 sm:pr-2">
+                        <Link href="/" title="Quay lại trang chủ" className="group flex items-center gap-1.5 rounded-full px-2 py-1 text-xs text-white/80 transition hover:bg-yellow-400/10 hover:text-yellow-200 sm:gap-2 sm:px-2.5 sm:text-sm">
+                            <ArrowLeft className="h-3.5 w-3.5 shrink-0 transition-transform group-hover:-translate-x-1 sm:h-4 sm:w-4" />
+                            <span className="hidden xs:inline sm:inline">Trang chủ</span>
                         </Link>
-                        <div className="mx-1 h-6 w-px shrink-0 bg-white/20" />
-                        <button type="button" onClick={handleLogout} title="Đăng xuất" aria-label="Đăng xuất" className="shrink-0 rounded-full p-2 text-white/70 transition hover:bg-red-900/60 hover:text-red-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400">
-                            <LogOut className="h-5 w-5" />
+                        <div className="h-4 w-px shrink-0 bg-yellow-400/20 sm:h-5" />
+                        <SnowflakeBalance />
+                        <div className="h-4 w-px shrink-0 bg-yellow-400/20 sm:h-5" />
+                        <button type="button" onClick={handleLogout} title="Đăng xuất" aria-label="Đăng xuất" className="shrink-0 rounded-full p-1 text-white/60 transition hover:bg-red-900/40 hover:text-red-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-yellow-400 sm:p-1.5">
+                            <LogOut className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                         </button>
                     </div>
                 </nav>

@@ -1,6 +1,8 @@
 // store/useGameStore.ts — Zustand store cho trạng thái game
 import { create } from 'zustand'
 import type { GameId, GameStatus, LedgerEntry } from '@/types/games'
+import api from '@/lib/api'
+import { getValidAuthToken } from '@/utils/auth'
 
 interface GameQuota {
     used: number
@@ -12,6 +14,7 @@ interface GameStore {
     // Số dư
     snowflakes: number
     setSnowflakes: (n: number) => void
+    refreshSnowflakes: () => Promise<number>
 
     // Thu chi hôm nay
     todayEarned: number
@@ -65,6 +68,40 @@ export const useGameStore = create<GameStore>((set, get) => ({
             }
         }
         set({ snowflakes: valid })
+    },
+    refreshSnowflakes: async () => {
+        if (typeof window === 'undefined') return 0
+        const token = getValidAuthToken()
+        if (!token) {
+            set({ snowflakes: 0 })
+            return 0
+        }
+        try {
+            const res = await api.get('/users/profile')
+            const data = res.data?.data || res.data
+            if (data && typeof data.snowflakes === 'number') {
+                const bal = Math.max(0, data.snowflakes)
+                get().setSnowflakes(bal)
+
+                // Đồng bộ thông tin profile mới nhất vào localStorage
+                const userInfoStr = localStorage.getItem('user_info')
+                if (userInfoStr) {
+                    try {
+                        const parsed = JSON.parse(userInfoStr)
+                        parsed.snowflakes = bal
+                        if (data.fullName) parsed.fullName = data.fullName
+                        if (data.avatar) parsed.avatar = data.avatar
+                        localStorage.setItem('user_info', JSON.stringify(parsed))
+                    } catch {
+                        /* noop */
+                    }
+                }
+                return bal
+            }
+        } catch {
+            /* noop */
+        }
+        return get().snowflakes
     },
 
     todayEarned: 0,

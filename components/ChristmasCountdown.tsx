@@ -40,13 +40,7 @@ export default function ChristmasCountdown() {
   if (!isClient || !christmasState) return null
 
   if (christmasState.isChristmasSeason) {
-    return (
-      <div className="mb-8 flex items-center justify-center gap-2 font-serif text-2xl font-bold text-yellow-200 drop-shadow-[0_0_15px_rgba(253,224,71,0.25)] sm:text-3xl md:text-5xl">
-        <Sparkles className="h-5 w-5 shrink-0 animate-pulse text-yellow-300 md:h-7 md:w-7" />
-        <span className="animate-pulse">Merry Christmas {christmasState.currentYear}! 🎅🎄</span>
-        <Sparkles className="h-5 w-5 shrink-0 animate-pulse text-yellow-300 md:h-7 md:w-7" />
-      </div>
-    )
+    return null
   }
 
   const countdownItems = [
@@ -57,7 +51,7 @@ export default function ChristmasCountdown() {
   ]
 
   return (
-    <div className="mb-8 flex flex-col items-center gap-3">
+    <div className="flex flex-col items-center gap-2.5 sm:gap-3">
       <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-yellow-200/90 sm:text-sm">
         <Clock className="h-4 w-4 animate-pulse text-yellow-300" />
         <span>Sắp đến Giáng Sinh rồi</span>

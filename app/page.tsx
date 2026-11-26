@@ -5,11 +5,15 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Gift, LogOut, User, Snowflake, Settings, X, Sparkles, TreePine, Gamepad2, Calendar } from 'lucide-react'
 import ChristmasCountdown from '@/components/ChristmasCountdown'
+import ChristmasCelebration from '@/components/ChristmasCelebration'
+import ChristmasAtmosphere from '@/components/ChristmasAtmosphere'
+import ChristmasTreeFlipCard from '@/components/ChristmasTreeFlipCard'
 import { SnowflakeBalance } from '@/components/games/SnowflakeBalance'
 import { useGameStore } from '@/store/useGameStore'
 import Cookies from 'js-cookie'
 import { getValidAuthToken, clearAuthData } from '@/utils/auth'
 import { getVietnamDateParts } from '@/utils/christmasHelper'
+import api from '@/lib/api'
 
 type UserInfo = {
   fullName?: string
@@ -29,8 +33,24 @@ export default function Home() {
     try {
       const { year, month, day } = getVietnamDateParts(new Date())
       setCurrentYear(year)
-      setIsDecember(month === 12)
-      setIsChristmasArrived(month === 12 && day >= 25)
+      let dec = month === 12
+      let arrived = month === 12 && day >= 25
+
+      // Hỗ trợ xem trước kịch bản qua query param (?preview=christmas hoặc ?preview=countdown)
+      if (typeof window !== 'undefined') {
+        const params = new URLSearchParams(window.location.search)
+        const preview = params.get('preview')
+        if (preview === 'christmas') {
+          dec = true
+          arrived = true
+        } else if (preview === 'countdown') {
+          dec = true
+          arrived = false
+        }
+      }
+
+      setIsDecember(dec)
+      setIsChristmasArrived(arrived)
     } catch {
       const now = new Date()
       setCurrentYear(now.getFullYear())
@@ -53,6 +73,24 @@ export default function Home() {
         clearAuthData()
         setUser(null)
       }
+
+      // Tải profile mới nhất từ server MongoDB (chuẩn theo Tet-Countdown)
+      api.get('/users/profile')
+        .then((res) => {
+          const freshUser = res.data?.data || res.data
+          if (freshUser) {
+            setUser(freshUser)
+            if (typeof freshUser.snowflakes === 'number') {
+              useGameStore.getState().setSnowflakes(freshUser.snowflakes)
+            }
+            try {
+              localStorage.setItem('user_info', JSON.stringify(freshUser))
+            } catch {
+              /* noop */
+            }
+          }
+        })
+        .catch((err) => console.error('Lỗi lấy profile:', err))
     } else {
       if (userInfo && !token) {
         clearAuthData()
@@ -82,41 +120,48 @@ export default function Home() {
       <div className="fixed inset-0 z-0 bg-linear-to-b from-red-950/75 via-black/40 to-red-950/90" />
       <div className="pointer-events-none fixed inset-0 z-0 bg-linear-to-br from-yellow-500/10 via-transparent to-green-950/30" />
 
+      {/* HIỆU ỨNG KHÔNG KHÍ & CỖ XE SANTA BAY QUA BẦU TRỜI */}
+      <ChristmasAtmosphere isChristmasSeason={isChristmasArrived} />
+
       {/* NAVBAR */}
-      <header className="fixed left-0 top-0 z-50 w-full border-b border-yellow-400/20 bg-red-950/40 px-4 py-3 shadow-lg backdrop-blur-xl md:px-8">
-        <nav className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3">
-          <Link href="/" className="group flex shrink-0 items-center gap-2 font-serif text-xl font-bold text-yellow-400 transition hover:scale-105 hover:text-yellow-200 md:text-2xl">
-            <Snowflake className="h-7 w-7 shrink-0 animate-spin md:h-8 md:w-8" />
+      <header className="fixed left-0 top-0 z-50 w-full border-b border-yellow-400/20 bg-red-950/40 px-3 py-2 shadow-lg backdrop-blur-xl transition-all sm:px-4 sm:py-2.5 md:px-8 md:py-3">
+        <nav className="mx-auto flex w-full max-w-7xl items-center justify-between gap-2 sm:gap-3">
+          {/* LOGO */}
+          <Link href="/" className="group flex shrink-0 items-center gap-1.5 font-serif text-lg font-bold text-yellow-400 drop-shadow-md transition hover:scale-105 hover:text-yellow-200 sm:gap-2 sm:text-xl md:text-2xl">
+            <Snowflake className="h-6 w-6 shrink-0 animate-spin text-yellow-300 md:h-7 md:w-7" style={{ animationDuration: '10s' }} />
             <span className="hidden sm:inline">Christmas Wishes</span>
           </Link>
 
+          {/* USER INFO & BALANCE (COMPACT & SLEEK) */}
           {user ? (
-            <div className="flex min-w-0 items-center gap-1 rounded-full border border-yellow-400/30 bg-black/40 py-1 pl-1 pr-2 shadow-lg backdrop-blur-md md:gap-2">
-              <Link href="/profile" title="Cài đặt tài khoản" className="group flex min-w-0 items-center gap-2 rounded-full px-1.5 py-1 transition hover:bg-red-900/50 md:gap-3 md:px-2">
+            <div className="flex items-center gap-1 rounded-full border border-yellow-400/30 bg-black/40 py-0.5 pl-1 pr-1.5 shadow-xl backdrop-blur-md sm:gap-2 sm:py-1 sm:pl-1.5 sm:pr-2">
+              {/* 1. AVATAR + TÊN (BẤM VÀO ĐỂ VÀO PROFILE) */}
+              <Link href="/profile" title="Cài đặt tài khoản" className="group flex items-center gap-1.5 rounded-full px-1 py-0.5 transition hover:bg-yellow-400/10 sm:gap-2 sm:px-1.5">
                 {avatarUrl ? (
-                  <img src={avatarUrl} alt="Ảnh đại diện" referrerPolicy="no-referrer" className="h-8 w-8 shrink-0 rounded-full border border-yellow-400/60 object-cover md:h-9 md:w-9" />
+                  <img src={avatarUrl} alt="Ảnh đại diện" referrerPolicy="no-referrer" className="h-7 w-7 shrink-0 rounded-full border border-yellow-400/70 object-cover shadow-sm sm:h-8 sm:w-8" />
                 ) : (
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-yellow-300 to-yellow-600 text-red-950 shadow-inner md:h-9 md:w-9">
-                    <User className="h-5 w-5" />
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-yellow-300 to-yellow-600 text-red-950 font-bold shadow-inner sm:h-8 sm:w-8">
+                    <User className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   </div>
                 )}
-                <span className="max-w-24 truncate text-sm font-medium transition group-hover:text-yellow-300 md:max-w-40 md:text-base">{displayName}</span>
-                <Settings className="h-4 w-4 shrink-0 text-white/50 transition group-hover:text-yellow-400" />
+                <span className="max-w-16 truncate text-xs font-medium text-white transition group-hover:text-yellow-300 xs:max-w-24 sm:max-w-28 sm:text-sm md:max-w-36">{displayName}</span>
+                <Settings className="h-3 w-3 shrink-0 text-white/50 transition group-hover:text-yellow-300 sm:h-3.5 sm:w-3.5" />
               </Link>
 
-              <div className="mx-1 h-6 w-px shrink-0 bg-white/20" />
+              <div className="h-4 w-px shrink-0 bg-yellow-400/20 sm:h-5" />
 
-              {/* SỐ BÔNG TUYẾT */}
-              <SnowflakeBalance className="px-2.5 py-2" />
+              {/* 2. SỐ BÔNG TUYẾT */}
+              <SnowflakeBalance />
 
-              <div className="mx-1 h-6 w-px shrink-0 bg-white/20" />
+              <div className="h-4 w-px shrink-0 bg-yellow-400/20 sm:h-5" />
 
-              <button type="button" onClick={handleLogout} title="Đăng xuất" aria-label="Đăng xuất" className="shrink-0 rounded-full p-2 text-white/70 transition hover:bg-red-900/60 hover:text-red-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400">
-                <LogOut className="h-5 w-5" />
+              {/* 3. NÚT ĐĂNG XUẤT */}
+              <button type="button" onClick={handleLogout} title="Đăng xuất" aria-label="Đăng xuất" className="shrink-0 rounded-full p-1 text-white/60 transition hover:bg-red-900/40 hover:text-red-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-yellow-400 sm:p-1.5">
+                <LogOut className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               </button>
             </div>
           ) : (
-            <Link href="/login" className="shrink-0 rounded-full border border-yellow-300/70 bg-linear-to-r from-yellow-500 to-yellow-300 px-4 py-2 text-sm font-bold text-red-950 shadow-lg transition hover:scale-105 hover:from-yellow-300 hover:to-yellow-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white md:px-6 md:text-base">
+            <Link href="/login" className="shrink-0 rounded-full border border-yellow-300/70 bg-linear-to-r from-yellow-500 to-yellow-300 px-3.5 py-1.5 text-xs font-bold text-red-950 shadow-lg transition hover:scale-105 hover:from-yellow-300 hover:to-yellow-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:px-5 sm:py-2 sm:text-sm">
               Đăng Nhập
             </Link>
           )}
@@ -124,169 +169,207 @@ export default function Home() {
       </header>
 
       {/* MAIN CONTENT */}
-      <div className="relative z-10 mx-auto flex w-full max-w-7xl grow flex-col justify-center px-4 pb-12 pt-28 md:px-6 md:pt-32">
-        <div className="grid w-full grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-6">
-          {/* LEFT: TREE MANAGEMENT / DECEMBER ANNOUNCEMENT */}
-          <section className="order-2 flex w-full flex-col items-center justify-center lg:col-span-3 lg:order-1">
-            {isDecember ? (
-              <div className="w-full rounded-2xl border border-yellow-400/25 bg-black/35 p-5 text-center shadow-2xl backdrop-blur-xl md:p-6">
-                <div className="mb-4 flex justify-center">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full border border-yellow-300/50 bg-linear-to-br from-red-800 to-red-950 shadow-[0_0_25px_rgba(234,179,8,0.15)]">
-                    <Gift className="h-9 w-9 text-yellow-300" />
-                  </div>
-                </div>
+      <div className="relative z-10 mx-auto flex w-full max-w-7xl grow flex-col justify-center px-4 pb-6 pt-20 md:px-6 md:pb-8 md:pt-24">
+        <div className="grid w-full grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-6">
+          {/* LEFT: TREE MANAGEMENT / DECEMBER ANNOUNCEMENT (3D FLIP CARD) */}
+          {user && (
+            <section className="order-2 flex w-full flex-col items-center justify-center lg:col-span-3 lg:order-1">
+              <ChristmasTreeFlipCard
+                isDecember={isDecember}
+                isChristmasSeason={isChristmasArrived}
+                currentYear={currentYear}
+                enableFlip={true}
+              />
+            </section>
+          )}
 
-                <h2 className="mb-3 font-serif text-xl font-bold text-yellow-300 md:text-2xl">Cây Giáng Sinh</h2>
-                <p className="text-sm leading-relaxed text-red-100/90">Mỗi mùa lễ hội, một cây quà mới, lưu giữ yêu thương qua năm tháng.</p>
-
-                <div className="my-5 h-px bg-linear-to-r from-transparent via-yellow-400/40 to-transparent" />
-
-                <div className="space-y-3 text-left text-sm text-white/80">
-                  <p className="flex items-start gap-3"><span className="text-xl">🎄</span><span>Mỗi năm một cây, lưu giữ kỷ niệm riêng.</span></p>
-                  <p className="flex items-start gap-3"><span className="text-xl">🎁</span><span>Chia sẻ cây để bạn bè gửi quà và lời chúc.</span></p>
-                  <p className="flex items-start gap-3"><span className="text-xl">🔒</span><span>Mở quà sau ngày 25/12, giữ trọn bất ngờ.</span></p>
-                </div>
-              </div>
-            ) : (
-              <div className="w-full rounded-2xl border border-yellow-400/25 bg-black/40 p-5 text-center shadow-2xl backdrop-blur-xl md:p-6">
-                <div className="mb-4 flex justify-center">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full border border-yellow-300/40 bg-linear-to-br from-amber-700/60 to-red-950/80 shadow-[0_0_25px_rgba(234,179,8,0.15)]">
-                    <Calendar className="h-8 w-8 text-yellow-300" />
-                  </div>
-                </div>
-
-                <h2 className="mb-2 font-serif text-xl font-bold text-yellow-300 md:text-2xl">
-                  Hẹn Bạn Vào Tháng 12!
-                </h2>
-
-                <div className="my-4 h-px bg-linear-to-r from-transparent via-yellow-400/35 to-transparent" />
-
-                <div className="space-y-2.5 text-left text-xs sm:text-sm text-white/80">
-                  <p className="flex items-start gap-2.5">
-                    <span className="text-base">🎄</span>
-                    <span>Tạo và trang trí cây thông kỷ niệm riêng cho năm {currentYear ?? ''}.</span>
-                  </p>
-                  <p className="flex items-start gap-2.5">
-                    <span className="text-base">🎁</span>
-                    <span>Gửi và nhận những phần quà bất ngờ cùng lời chúc ấm áp.</span>
-                  </p>
-                  <p className="flex items-start gap-2.5">
-                    <span className="text-base">❄️</span>
-                    <span>Săn bông tuyết và tham gia các trò chơi nhận thưởng giới hạn.</span>
-                  </p>
-                </div>
-              </div>
-            )}
-          </section>
-
-          {/* CENTER: CHRISTMAS COUNTDOWN */}
+          {/* CENTER: CHRISTMAS COUNTDOWN HOẶC CELEBRATION */}
           <section className="order-1 flex w-full min-w-0 flex-col items-center justify-center text-center lg:col-span-6 lg:col-start-4 lg:order-2">
-            <div className="text-center">
-              <div className="mb-3 flex items-center justify-center gap-2 text-sm font-bold uppercase tracking-[0.25em] text-yellow-200 drop-shadow-lg md:text-base">
-                <Sparkles className="h-4 w-4" />
-                <span>Mùa yêu thương</span>
-                <Sparkles className="h-4 w-4" />
-              </div>
+            {!isChristmasArrived ? (
+              <>
+                <div className="text-center">
+                  <div className="mb-2 flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-[0.25em] text-yellow-200 drop-shadow-lg md:text-sm">
+                    <Sparkles className="h-3.5 w-3.5" />
+                    <span>Mùa yêu thương</span>
+                    <Sparkles className="h-3.5 w-3.5" />
+                  </div>
 
-              <h1 className="bg-linear-to-b from-yellow-200 via-yellow-400 to-amber-600 bg-clip-text font-serif text-4xl font-black uppercase leading-tight text-transparent drop-shadow-[0_5px_5px_rgba(0,0,0,0.7)] sm:text-5xl md:text-6xl lg:text-7xl">
-                Giáng Sinh
-              </h1>
+                  <h1 className="bg-linear-to-b from-yellow-200 via-yellow-400 to-amber-600 bg-clip-text font-serif text-4xl font-black uppercase leading-tight text-transparent drop-shadow-[0_5px_5px_rgba(0,0,0,0.7)] sm:text-5xl md:text-6xl lg:text-7xl">
+                    Giáng Sinh
+                  </h1>
 
-              <p className="mt-1 font-serif text-3xl font-bold tracking-[0.3em] text-transparent bg-linear-to-b from-yellow-100 via-yellow-300 to-amber-500 bg-clip-text drop-shadow-[0_3px_8px_rgba(234,179,8,0.4)] md:text-4xl">
-                {currentYear ?? '••••'}
-              </p>
-            </div>
+                  <p className="mt-1 font-serif text-2xl font-bold tracking-[0.3em] text-transparent bg-linear-to-b from-yellow-100 via-yellow-300 to-amber-500 bg-clip-text drop-shadow-[0_3px_8px_rgba(234,179,8,0.4)] md:text-3xl">
+                    {currentYear ?? '••••'}
+                  </p>
+                </div>
 
-            {/* Ẩn đồng hồ đếm ngược khi đã tới thời điểm Giáng Sinh (từ 25/12) */}
-            {!isChristmasArrived && (
-              <div className="mt-5 w-full rounded-3xl border border-yellow-400/25 bg-black/25 px-2 py-6 shadow-2xl backdrop-blur-sm sm:px-4 md:py-8">
-                <ChristmasCountdown />
-              </div>
+                <div className="mt-3 sm:mt-4 w-full max-w-md rounded-3xl border border-yellow-400/25 bg-black/25 px-3 py-4 shadow-2xl backdrop-blur-sm sm:px-4 md:py-5">
+                  <ChristmasCountdown />
+                </div>
+
+                <p className="mt-4 max-w-lg rounded-full border border-white/10 bg-black/25 px-4 py-2 text-center font-handwriting text-lg text-yellow-100 shadow-lg backdrop-blur-sm md:text-xl">
+                  “Trao yêu thương, nhận hạnh phúc” ✨
+                </p>
+              </>
+            ) : (
+              <ChristmasCelebration currentYear={currentYear} />
             )}
-
-            <p className="mt-6 max-w-lg rounded-full border border-white/10 bg-black/25 px-5 py-3 text-center font-handwriting text-xl text-yellow-100 shadow-lg backdrop-blur-sm md:text-2xl">
-              “Trao yêu thương, nhận hạnh phúc” ✨
-            </p>
           </section>
 
           {/* RIGHT: TREE & GIFT ACTIONS */}
-          <section
-            className={`order-3 flex w-full flex-col gap-3 lg:col-span-3 lg:col-start-10 lg:order-3 transition-all duration-300 ${
-              !isDecember ? 'grayscale opacity-60' : ''
-            }`}
-          >
-            {!isDecember && (
-              <div className="text-center">
-                <span className="inline-block rounded-full border border-yellow-400/25 bg-black/40 px-3 py-1 text-[11px] font-semibold text-yellow-200/90 shadow">
-                  🔒 Mở cửa từ 01/12 đến 31/12
-                </span>
-              </div>
-            )}
+          {user && (
+            <section className="order-3 flex w-full flex-col gap-3 lg:col-span-3 lg:col-start-10 lg:order-3 transition-all duration-300">
+              {!isDecember && (
+                <div className="text-center grayscale opacity-60">
+                  <span className="inline-block rounded-full border border-yellow-400/25 bg-black/40 px-3 py-1 text-[11px] font-semibold text-yellow-200/90 shadow">
+                    🔒 Mở cửa từ 01/12 đến 31/12
+                  </span>
+                </div>
+              )}
 
-            <Link
-              href="/my-trees"
-              className={`group block rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-green-300 ${
-                !isDecember ? 'cursor-not-allowed' : ''
-              }`}
-            >
-              <div className="flex items-center gap-3 rounded-2xl border-2 border-green-400/40 bg-linear-to-r from-green-900/90 to-green-950/90 p-4 shadow-xl backdrop-blur-md transition duration-300 hover:-translate-y-1 hover:border-green-300 hover:shadow-[0_10px_30px_rgba(34,197,94,0.15)]">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-green-300/20 bg-green-400/10 text-green-300 transition group-hover:scale-110">
-                  <TreePine className="h-7 w-7" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <h2 className="font-serif text-lg font-bold text-green-300">Cây của tôi</h2>
-                  <p className="mt-1 text-xs leading-relaxed text-green-100/80">Cây quà và kỷ niệm mỗi mùa</p>
-                </div>
-                <span className="text-lg text-green-300 transition group-hover:translate-x-1">→</span>
-              </div>
-            </Link>
-
-            <Link
-              href="/snowflake-game"
-              className={`group block rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-sky-200 ${
-                !isDecember ? 'cursor-not-allowed' : ''
-              }`}
-            >
-              <div className="flex items-center gap-3 rounded-2xl border border-sky-200/20 bg-linear-to-r from-slate-900/90 to-slate-800/90 p-3.5 shadow-lg backdrop-blur-md transition duration-300 hover:-translate-y-0.5 hover:border-sky-200/50 hover:shadow-[0_8px_24px_rgba(125,211,252,0.08)]">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-sky-200/15 bg-sky-300/10 text-sky-200 transition group-hover:scale-110">
-                  <Snowflake className="h-6 w-6" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <h2 className="font-serif text-base font-bold text-sky-200">Săn Bông Tuyết</h2>
-                  <p className="mt-1 text-xs leading-relaxed text-slate-200/70">Vui chơi cùng mùa tuyết trắng</p>
-                </div>
-                <span className="text-sm text-sky-200 transition group-hover:translate-x-1">→</span>
-              </div>
-            </Link>
-
-            <Link
-              href="/mini-games"
-              className={`group block rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-yellow-300 ${
-                !isDecember ? 'cursor-not-allowed' : ''
-              }`}
-            >
-              <div className="relative overflow-hidden rounded-2xl border border-yellow-400/30 bg-linear-to-br from-red-900/95 via-red-950/95 to-red-950 p-4 shadow-xl backdrop-blur-md transition duration-300 hover:-translate-y-1 hover:border-yellow-400/60 hover:shadow-[0_10px_30px_rgba(234,179,8,0.12)]">
-                <div className="pointer-events-none absolute -right-3 -top-4 text-6xl opacity-10 transition group-hover:rotate-12">🎮</div>
-                <div className="relative flex items-start gap-3">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-yellow-300/20 bg-yellow-400/10 text-yellow-300 transition group-hover:scale-110">
-                    <Gamepad2 className="h-6 w-6" />
+              <Link
+                href="/my-trees"
+                className={`group block rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-green-300 ${
+                  !isDecember ? 'cursor-not-allowed' : ''
+                }`}
+              >
+                <div
+                  className={`flex items-center gap-3 rounded-2xl p-3.5 sm:p-4 shadow-xl backdrop-blur-md transition duration-300 ${
+                    isDecember
+                      ? 'border-2 border-green-400/40 bg-linear-to-r from-green-900/90 to-green-950/90 hover:-translate-y-1 hover:border-green-300 hover:shadow-[0_10px_30px_rgba(34,197,94,0.15)]'
+                      : 'border border-white/10 bg-black/40 hover:border-white/20'
+                  }`}
+                >
+                  <div
+                    className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-green-300/20 bg-green-400/10 text-green-300 transition-all duration-300 ${
+                      isDecember
+                        ? 'group-hover:scale-110'
+                        : 'grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110'
+                    }`}
+                  >
+                    <TreePine className="h-7 w-7" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <h2 className="font-serif text-lg font-bold text-yellow-300">Mini Games</h2>
-                    <p className="mt-1 text-xs leading-relaxed text-red-100/80">Cùng chơi, cùng đón mùa đông</p>
-                    <p className="mt-3 text-xs font-bold text-yellow-200 transition group-hover:text-yellow-100">Khám phá trò chơi →</p>
+                    <h2
+                      className={`font-serif text-lg font-bold transition-colors ${
+                        isDecember ? 'text-green-300' : 'text-white/70'
+                      }`}
+                    >
+                      Cây của tôi
+                    </h2>
+                    <p className="mt-0.5 text-xs leading-relaxed text-white/50">Cây quà và kỷ niệm mỗi mùa</p>
+                  </div>
+                  <span
+                    className={`text-lg transition group-hover:translate-x-1 ${
+                      isDecember ? 'text-green-300' : 'text-white/40'
+                    }`}
+                  >
+                    →
+                  </span>
+                </div>
+              </Link>
+
+              <Link
+                href="/snowflake-game"
+                className={`group block rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-sky-200 ${
+                  !isDecember ? 'cursor-not-allowed' : ''
+                }`}
+              >
+                <div
+                  className={`flex items-center gap-3 rounded-2xl p-3.5 shadow-lg backdrop-blur-md transition duration-300 ${
+                    isDecember
+                      ? 'border border-sky-200/20 bg-linear-to-r from-slate-900/90 to-slate-800/90 hover:-translate-y-0.5 hover:border-sky-200/50 hover:shadow-[0_8px_24px_rgba(125,211,252,0.08)]'
+                      : 'border border-white/10 bg-black/40 hover:border-white/20'
+                  }`}
+                >
+                  <div
+                    className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-sky-200/15 bg-sky-300/10 text-sky-200 transition-all duration-300 ${
+                      isDecember
+                        ? 'group-hover:scale-110'
+                        : 'grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110'
+                    }`}
+                  >
+                    <Snowflake className="h-6 w-6" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h2
+                      className={`font-serif text-base font-bold transition-colors ${
+                        isDecember ? 'text-sky-200' : 'text-white/70'
+                      }`}
+                    >
+                      Săn Bông Tuyết
+                    </h2>
+                    <p className="mt-0.5 text-xs leading-relaxed text-white/50">Vui chơi cùng mùa tuyết trắng</p>
+                  </div>
+                  <span
+                    className={`text-sm transition group-hover:translate-x-1 ${
+                      isDecember ? 'text-sky-200' : 'text-white/40'
+                    }`}
+                  >
+                    →
+                  </span>
+                </div>
+              </Link>
+
+              <Link
+                href="/mini-games"
+                className={`group block rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-yellow-300 ${
+                  !isDecember ? 'cursor-not-allowed' : ''
+                }`}
+              >
+                <div
+                  className={`relative overflow-hidden rounded-2xl p-3.5 sm:p-4 shadow-xl backdrop-blur-md transition duration-300 ${
+                    isDecember
+                      ? 'border border-yellow-400/30 bg-linear-to-br from-red-900/95 via-red-950/95 to-red-950 hover:-translate-y-1 hover:border-yellow-400/60 hover:shadow-[0_10px_30px_rgba(234,179,8,0.12)]'
+                      : 'border border-white/10 bg-black/40 hover:border-white/20'
+                  }`}
+                >
+                  <div
+                    className={`pointer-events-none absolute -right-3 -top-4 text-6xl opacity-10 transition group-hover:rotate-12 ${
+                      isDecember ? '' : 'grayscale group-hover:grayscale-0'
+                    }`}
+                  >
+                    🎮
+                  </div>
+                  <div className="relative flex items-start gap-3">
+                    <div
+                      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-yellow-300/20 bg-yellow-400/10 text-yellow-300 transition-all duration-300 ${
+                        isDecember
+                          ? 'group-hover:scale-110'
+                          : 'grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110'
+                      }`}
+                    >
+                      <Gamepad2 className="h-6 w-6" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <h2
+                        className={`font-serif text-lg font-bold transition-colors ${
+                          isDecember ? 'text-yellow-300' : 'text-white/70'
+                        }`}
+                      >
+                        Mini Games
+                      </h2>
+                      <p className="mt-0.5 text-xs leading-relaxed text-white/50">Cùng chơi, cùng đón mùa đông</p>
+                      <p
+                        className={`mt-2.5 text-xs font-bold transition ${
+                          isDecember ? 'text-yellow-200 group-hover:text-yellow-100' : 'text-white/60 group-hover:text-white/80'
+                        }`}
+                      >
+                        Khám phá trò chơi →
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Link>
-          </section>
+              </Link>
+            </section>
+          )}
         </div>
       </div>
 
       {/* FOOTER */}
-      <footer className="relative z-10 mt-auto w-full border-t border-yellow-400/10 bg-black/20 px-4 py-5 text-center text-xs text-white/50 backdrop-blur-sm md:text-sm">
+      <footer className="relative z-10 mt-auto w-full border-t border-yellow-400/10 bg-black/20 px-4 py-3 text-center text-xs text-white/50 backdrop-blur-sm md:text-sm">
         <p>© {currentYear ?? new Date().getFullYear()} Christmas Wishes</p>
-        <p className="mt-1 text-yellow-100/40">Made with ❤️ for a magical Christmas</p>
+        <p className="mt-0.5 text-yellow-100/40">Made with ❤️ for a magical Christmas</p>
       </footer>
 
       {/* LOGIN POPUP */}

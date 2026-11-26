@@ -229,13 +229,13 @@ export default function MiniGamesPage() {
                     className={`${sectionClass} group relative flex min-w-0 flex-col overflow-hidden transition duration-300 ${
                       isOpen
                         ? 'hover:-translate-y-1 hover:border-yellow-300/40 hover:shadow-[0_20px_50px_rgba(0,0,0,0.35)]'
-                        : 'grayscale opacity-75 hover:border-white/20'
+                        : 'opacity-75 cursor-not-allowed hover:border-white/20'
                     }`}
                   >
                     {/* Top accent line */}
                     <div
                       className={`h-1 w-full bg-linear-to-r ${
-                        isOpen ? game.accentGradient : 'from-transparent via-white/20 to-transparent'
+                        isOpen ? game.accentGradient : 'from-transparent via-white/15 to-transparent'
                       }`}
                     />
 
@@ -246,8 +246,10 @@ export default function MiniGamesPage() {
                       {/* Card header */}
                       <div className="mb-4 flex items-start gap-3.5 pr-6">
                         <div
-                          className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/10 shadow-inner text-3xl transition duration-300 ${
-                            isOpen ? 'group-hover:scale-110' : ''
+                          className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/10 shadow-inner text-3xl transition-all duration-300 ${
+                            isOpen
+                              ? 'group-hover:scale-110'
+                              : 'grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110'
                           } ${game.iconBg}`}
                         >
                           {game.icon}
@@ -257,7 +259,9 @@ export default function MiniGamesPage() {
                           <div className="flex items-center gap-2 flex-wrap">
                             <GameStatusBadge status={game.status} />
                           </div>
-                          <h3 className="mt-1 font-serif text-xl font-black text-yellow-200 group-hover:text-yellow-100">
+                          <h3 className={`mt-1 font-serif text-xl font-black transition-colors ${
+                            isOpen ? 'text-yellow-200 group-hover:text-yellow-100' : 'text-white/70'
+                          }`}>
                             {game.title}
                           </h3>
                         </div>
